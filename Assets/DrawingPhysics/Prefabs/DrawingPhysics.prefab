@@ -1,22 +1,12 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1001 &100100000
-Prefab:
-  m_ObjectHideFlags: 1
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications: []
-    m_RemovedComponents: []
-  m_ParentPrefab: {fileID: 0}
-  m_RootGameObject: {fileID: 1909053267395076}
-  m_IsPrefabParent: 1
 --- !u!1 &1909053267395076
 GameObject:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  serializedVersion: 5
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
   m_Component:
   - component: {fileID: 4976345591746794}
   - component: {fileID: 114567261027369356}
@@ -29,32 +19,54 @@ GameObject:
   m_IsActive: 1
 --- !u!4 &4976345591746794
 Transform:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1909053267395076}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 4.082751, y: 1.7137275, z: -5}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &114567261027369356
 MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1909053267395076}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 1cb996b9cbbdbea40bf75f32a8c3ac8f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  linePrefab: {fileID: 100000, guid: e73efe74f0bd333439a0c3bba93ce01b, type: 2}
-  lineMaterial: {fileID: 2100000, guid: 63b75a67b83be3445aaf9b3cc1eff7da, type: 2}
-  colliderPrefab: {fileID: 100000, guid: 652e6523e397c65448f5b682367e2f9f, type: 2}
+  linesPrefab:
+  - {fileID: 0}
+  - {fileID: 100000, guid: 64aaf0800a96d8d4d9175f5d1fd15685, type: 3}
+  - {fileID: 100000, guid: 5476315e42b078b44a414620262041c2, type: 3}
+  - {fileID: 100000, guid: 4b2003bdaf1dc624dbe6c4f4976a5332, type: 3}
+  - {fileID: 100000, guid: 7301b47d9279eeb4190e4a9e63c3952f, type: 3}
+  collidersPrefab:
+  - {fileID: 0}
+  - {fileID: 100000, guid: 84ceb902b41aa2049b9ebda988c01549, type: 3}
+  - {fileID: 100000, guid: 4fb88fc5d3ab48940b039e2aeed8a023, type: 3}
+  - {fileID: 100000, guid: a804d64d56388ed4c92d4fc6831c74bb, type: 3}
+  - {fileID: 100000, guid: 3dccf8098a7a2b3438423118375cbd8c, type: 3}
+  lineMaterials:
+  - {fileID: 0}
+  - {fileID: 2100000, guid: 9257fad660745d34caa0de561393d341, type: 2}
+  - {fileID: 2100000, guid: bccefbbbb84028e408cad617c9020c05, type: 2}
+  - {fileID: 2100000, guid: 7b7cb9ee17c196d4fa4b02f4ebd97923, type: 2}
+  - {fileID: 2100000, guid: 162cda795485a014cac142ebac58380c, type: 2}
+  linePrefab: {fileID: 100000, guid: e73efe74f0bd333439a0c3bba93ce01b, type: 3}
+  lineMaterial: {fileID: 2100000, guid: 84b9e1d19d11078d11005b9844295342, type: 2}
+  colliderPrefab: {fileID: 100000, guid: 652e6523e397c65448f5b682367e2f9f, type: 3}
   width: 1
-  destroyTime: 10
-  drawStable: 0
+  destroyTime: 1000
+  drawStable: 1
   isDrawing: 0
+  stateDraw: 0

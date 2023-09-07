@@ -4,10 +4,17 @@
 //---------------------------------------------------------------------------------------------------------------
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
+using System.Diagnostics.Tracing;
+using Unity.VisualScripting;
 
 public class DrawingPhysics : MonoBehaviour {
 
-	public GameObject linePrefab;
+	public List<GameObject> linesPrefab;
+    public List<GameObject> collidersPrefab;
+    public List<Material> lineMaterials;
+
+    public GameObject linePrefab;
 	public Material lineMaterial;
 	public GameObject colliderPrefab;
 	private GameObject colliderClone;
@@ -19,7 +26,7 @@ public class DrawingPhysics : MonoBehaviour {
 	private Vector3 lastdrawPos;
 	private Vector3 drawPos;
 	private int vertexCount;
-	private GameObject newLineMesh;
+	[SerializeField] GameObject newLineMesh;
 	private float cameraFar=20;
 	private bool startDraw = false;
 	private bool endDraw = false;
@@ -27,8 +34,22 @@ public class DrawingPhysics : MonoBehaviour {
 	private GameObject lineCollection;
 	public bool drawStable = false;
 	public bool isDrawing;
-	
-	void Start (){
+
+	[SerializeField] DrawState stateDraw;
+    public DrawState StateDraw
+	{
+		get => stateDraw;
+		set
+		{
+			stateDraw = value;
+			linePrefab = linesPrefab[((int)value)];
+			colliderPrefab = collidersPrefab[(int)value];
+			lineMaterial = lineMaterials[(int)value];
+			_SetDrawStable((int)value);
+		}
+	}
+
+    void Start (){
 		//Find MainCamera
 		if (cameras==null && GameObject.FindWithTag("MainCamera"))
 		{
@@ -42,9 +63,14 @@ public class DrawingPhysics : MonoBehaviour {
 			lineCollection = new GameObject("PhysicLines");
 		}
 	}
-	
-	void Update ()
+    private void Update()
+    {
+		Draw();
+    }
+    void Draw ()
 	{
+		if (StateDraw == DrawState.none) return;
+
 		#if UNITY_EDITOR  ||  UNITY_STANDALONE  ||  UNITY_WEBPLAYER 
 			startDraw = Input.GetKeyDown(KeyCode.Mouse0);
 			endDraw = Input.GetKeyUp(KeyCode.Mouse0);
@@ -91,19 +117,43 @@ public class DrawingPhysics : MonoBehaviour {
 			brushDrawingClone.transform.parent = newLineMesh.transform;
 			//Add Rigidbody to newLineMesh
 			Rigidbody newRigbody = newLineMesh.AddComponent<Rigidbody>();
-			//Rigdbody constraints
-			newRigbody.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezePositionZ;
+			
+			newRigbody.interpolation = RigidbodyInterpolation.Interpolate;
+			newRigbody.collisionDetectionMode = CollisionDetectionMode.ContinuousSpeculative;
+            //Rigdbody constraints
+            newRigbody.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezePositionZ;
 			//Hold leftShift to draw soild lines
 			if (drawStable)
 			{
 				newRigbody.isKinematic = true;
 			}
+
 			//Add delay destroy
 			Destroy(newLineMesh, destroyTime);
+			switch (StateDraw)
+			{
+				case DrawState.brick:
+					Destroy(newLineMesh.gameObject, 3);
+					break;
+				case DrawState.fire:
+				case DrawState.water:
+                    Destroy(newLineMesh.gameObject, 1);
+					break;
+            }
+
+			if (StateDraw == DrawState.rope || StateDraw == DrawState.fire || StateDraw == DrawState.water || StateDraw == DrawState.brick)
+			{
+				for (int i = 0; i < newLineMesh.transform.childCount - 1; i++)
+				{
+					newLineMesh.transform.GetChild(i).GetComponent<Collider>().enabled = true;
+				}
+			}
+
+			StateDraw = DrawState.none;
 		}
 		
 		//Set LineRenderer and create it's colliders
-		if (isDrawing && brushDrawingClone)
+		if (isDrawing && brushDrawingClone && mouseMove() && GPMng.inst.Enegy>0)
 		{
 			//Screen to WorldPoint
 			drawPos = cameras.ScreenToWorldPoint (new Vector3(Input.mousePosition.x, Input.mousePosition.y, cameraFar));
@@ -120,7 +170,8 @@ public class DrawingPhysics : MonoBehaviour {
 				lineRenderer.endWidth = cameraFar*width/60;
 				lineRenderer.sharedMaterial = lineMaterial;
 				//Create colliders belongs to it
-				colliderClone = Instantiate(colliderPrefab, (drawPos+lastdrawPos)/2, Quaternion.LookRotation(drawPos-lastdrawPos)) as GameObject;
+                colliderClone = Instantiate(colliderPrefab, (drawPos+lastdrawPos)/2, Quaternion.LookRotation(drawPos-lastdrawPos)) as GameObject;
+
 				CapsuleCollider capsulecollider = colliderClone.GetComponent<CapsuleCollider>();
 				capsulecollider.radius = cameraFar*width/120;
 				capsulecollider.height = drawdistance;
@@ -128,12 +179,62 @@ public class DrawingPhysics : MonoBehaviour {
 				colliderClone.transform.parent = newLineMesh.transform;
 				//Save last draw point
 				lastdrawPos = drawPos;
+				GPMng.inst.Enegy--;
 			}
 		}
 		
 	}
-	
-	public void SetStable()
+	int stateSelect;
+	public void SetStateDraw(int state)
+	{
+		stateSelect = state;
+
+        Invoke(nameof(_SetStateDraw), .2f);
+	}
+    bool mouseMove()
+    {
+        if (Input.GetAxis("Mouse X") != 0) return true;
+        if (Input.GetAxis("Mouse Y") != 0) return true;
+        return false;
+    }
+    void _SetStateDraw()
+    {
+        switch (stateSelect)
+        {
+            case 1:
+                StateDraw = DrawState.walk;
+                break;
+            case 2:
+                StateDraw = DrawState.water;
+                break;
+            case 3:
+                StateDraw = DrawState.fire;
+                break;
+            case 4:
+                StateDraw = DrawState.rope;
+                break;
+            case 5:
+                StateDraw = DrawState.brick;
+                break;
+        }
+    }
+	void _SetDrawStable(int stateSelect)
+	{
+        switch (stateSelect)
+        {
+            case 1:
+            case 2:
+            case 3:
+            case 4:
+                drawStable = true;
+                break;
+            case 5:
+                drawStable = false;
+                break;
+        }
+    }
+
+    public void SetStable()
 	{
 		drawStable = !drawStable;
 	}
@@ -142,13 +243,8 @@ public class DrawingPhysics : MonoBehaviour {
 	{
 		Destroy(lineCollection);
 	}
-	
-	//Draw white box, help you to locate the draw plane.
-	void OnDrawGizmos() 
-	{
-		//Gizmos.color = Color.white;
-		//Gizmos.DrawWireCube (transform.position, new Vector3(50, 50, 0));
-	}
-	
 }
-
+public enum DrawState
+{ 
+	none = 0, walk = 1, water = 2, fire = 3, rope = 4, brick = 5
+}
