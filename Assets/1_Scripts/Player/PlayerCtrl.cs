@@ -1,79 +1,101 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Rendering.VirtualTexturing;
 
 public class PlayerCtrl : MonoBehaviour
 {
-    public PlayerStateBehavior stateBehavior;
+    [SerializeField] PlayerStateBehavior stateBehavior;
+    public PlayerStateBehavior StateBehavior
+    {
+        set
+        {
+            stateBehavior = value;
+        }
+        get => stateBehavior;
+    }
     // Start is called before the first frame update
     public float direction = 1;
     Rigidbody rig;
 
-    public Transform rope;
+    public List<Transform> ropesClimbed = null;
     void Start()
     {
-        stateBehavior = PlayerStateBehavior.standby;
+        StateBehavior = PlayerStateBehavior.standby;
         rig = GetComponent<Rigidbody>();
+        ropesClimbed = new List<Transform>();
         if (rig == null)
             rig = gameObject.AddComponent<Rigidbody>();
 
     }
     private void Update()
     {
+        if (!GPMng.inst.IsPlaying) return;
         Standby();
         AutoMove();
-        AutoClimb();
+        CheckIdle();
     }
     public void AutoMove()
     {
-        if (stateBehavior != PlayerStateBehavior.move) return;
+        if (StateBehavior != PlayerStateBehavior.move) return;
         if (rig.isKinematic)
-            rig.isKinematic = true;
+            rig.isKinematic = false;
 
         transform.position += new Vector3(direction * Time.deltaTime, 0, 0);
     }
-    public Climb climb;
     public void Standby()
     {
-        if (stateBehavior == PlayerStateBehavior.standby && GPMng.inst.IsPlaying == true)
-        {
-            stateBehavior = PlayerStateBehavior.move;
-        }
+        if (StateBehavior != PlayerStateBehavior.standby) return;
+        StateBehavior = PlayerStateBehavior.move;
     }
-    public void AutoClimb()
+    public void Climb(Transform rope)
     {
-        if (stateBehavior != PlayerStateBehavior.climb) return;
+        //Transform rope = ropeDeteched;
+        StateBehavior = PlayerStateBehavior.climb;
 
-        if (climb != null) return;
+        ropesClimbed.Add(rope.parent);
 
-        var points = new Vector3[rope.childCount];
-        for (int i = 0; i < rope.childCount; i++)
+        var climb = new Climb(rope, transform);
+        climb.DoClimbWithRope(() =>
         {
-            points[i] = rope.GetChild(i).position;
-        }
-        climb = new Climb(points, transform);
-        climb.MoveToNextPoint(() =>
-        {
-            stateBehavior = PlayerStateBehavior.move;
-            climb = null;
-            rope = null;
+            StateBehavior = PlayerStateBehavior.move;
+            rope.gameObject.SetActive(false);
+            //ropeDeteched = null;
         });
         rig.isKinematic = true;
     }
-    public List<Transform> roped = new List<Transform>();
+
+    [SerializeField] Transform ropeDeteched = null;
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.tag == "rope" && stateBehavior != PlayerStateBehavior.climb)
+        switch (other.gameObject.tag)
         {
-            if (roped.Exists(x => x == other.gameObject.transform.parent)) return;
+            case "rope":
+                if (StateBehavior == PlayerStateBehavior.climb) break;
 
-            print(1111111111111111);
-            rope = other.gameObject.transform.parent;
-            stateBehavior = PlayerStateBehavior.climb;
+                var root = other.transform.parent;
+                var trans = other.transform;
 
-            roped.Add(other.gameObject.transform.parent);
+                if (ropesClimbed.Exists(x => x == root)) break;
+                //if (ropeDeteched != null) break;
+                //ropeDeteched = trans;
+
+                if (trans != root.GetChild(0) &&
+                    trans != root.GetChild(root.childCount - 2))
+                {
+                    //ropeDeteched = null;
+                    break;
+                }
+
+                Climb(trans);
+                break;
         }
+    }
+
+    [SerializeField] PlayerMovement playerMovement;
+    void CheckIdle()
+    {
+        if (playerMovement.trans == null) playerMovement = new PlayerMovement(transform);
+        playerMovement.Update();
     }
 }
 public enum PlayerStateBehavior

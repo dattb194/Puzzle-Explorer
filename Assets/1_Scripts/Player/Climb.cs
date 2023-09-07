@@ -1,50 +1,61 @@
 ﻿using DG.Tweening;
-using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
 
+[System.Serializable]
 public class Climb
 {
-    public Transform trans;
-    public Vector3[] points; // The array of points to move to
-    public float duration = 2; // The duration of each movement
-    public Ease easeType = Ease.Linear; // The easing type of the movement
-    private int currentIndex; // The index of the current point
-    public Climb(Vector3[] points, Transform trans)
+    public Transform player;
+    public Vector3[] points;
+    public float duration = 2;
+
+    public Transform rope;
+
+    public bool isActive = false;
+
+    public Climb(Vector3[] points, Transform player, float duration = 2)
     {
         this.points = points;
-        this.trans = trans;
-        currentIndex = 0;
-        MoveToNextPoint();
+        this.player = player;
+        this.duration = duration;
+    }
+    public Climb(Transform rope, Transform player, float duration = 2)
+    {
+        this.rope = rope;
+        this.player = player;
+        this.duration = duration;
     }
 
-
-    public void MoveToNextPoint(UnityAction done = null)
+    public void DoClimbWithPoints(UnityAction done = null)
     {
-        trans.DOPath(points, duration).SetEase(easeType).SetAutoKill(true).onComplete += () =>
+        player.transform.DOPath(points, duration).SetEase(Ease.Linear).SetAutoKill(true).onComplete += () =>
         {
             done?.Invoke();
-            trans.position = points[points.Length - 1];
         };
+    }
+    public void DoClimbWithRope(UnityAction done = null)
+    {
+        Debug.Log(rope.name);
+        var root = rope.parent;
+        points = new Vector3[root.childCount - 1];
 
-        //    if (currentIndex < points.Length) // Check if there are more points to move to
-        //    {
-        //        trans.DOMove(points[currentIndex], duration) // Move the player to the current point with the given duration and easing type
-        //            .SetEase(easeType)
-        //            .OnComplete(() => // Set a callback function to be executed when the movement is completed
-        //            {
-        //                if (currentIndex >= points.Length - 1)
-        //                {
-        //                    done?.Invoke();
-        //                    Debug.LogError("done?.Invoke();");
-        //                }
-        //                else
-        //                {
-        //                    currentIndex++; // Increment the index and move to the next point
-        //                    MoveToNextPoint(); // Recursively call this function
-        //                }
-        //            });
-        //    }
-        //}
+        if (rope == root.GetChild(0))
+        {
+            Debug.Log(44444);
+            for (int i = 0; i < root.childCount - 1; i++)
+            {
+                points[i] = root.GetChild(i).position;
+            }
+        }
+
+        if (rope == root.GetChild(root.childCount - 2))
+        {
+            Debug.Log(5555555);
+            for (int i = root.childCount - 2; i >= 0; i--)
+            {
+                points[root.childCount - 2 - i] = root.GetChild(i).position;
+            }
+        }
+        DoClimbWithPoints(done);
     }
 }
