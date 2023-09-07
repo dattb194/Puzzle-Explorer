@@ -7,9 +7,10 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.Tracing;
 using Unity.VisualScripting;
+using System.Linq;
 
 public class DrawingPhysics : MonoBehaviour {
-
+	public static DrawingPhysics inst;
 	public List<GameObject> linesPrefab;
     public List<GameObject> collidersPrefab;
     public List<Material> lineMaterials;
@@ -35,13 +36,13 @@ public class DrawingPhysics : MonoBehaviour {
 	public bool drawStable = false;
 	public bool isDrawing;
 
-	[SerializeField] DrawState stateDraw;
-    public DrawState StateDraw
+	[SerializeField] DrawStyle styleDraw;
+    public DrawStyle StyleDraw
 	{
-		get => stateDraw;
+		get => styleDraw;
 		set
 		{
-			stateDraw = value;
+			styleDraw = value;
 			linePrefab = linesPrefab[((int)value)];
 			colliderPrefab = collidersPrefab[(int)value];
 			lineMaterial = lineMaterials[(int)value];
@@ -49,7 +50,11 @@ public class DrawingPhysics : MonoBehaviour {
 		}
 	}
 
-    void Start (){
+    private void Awake()
+    {
+		inst = this;
+    }
+    public void Initialize (){
 		//Find MainCamera
 		if (cameras==null && GameObject.FindWithTag("MainCamera"))
 		{
@@ -69,7 +74,7 @@ public class DrawingPhysics : MonoBehaviour {
     }
     void Draw ()
 	{
-		if (StateDraw == DrawState.none) return;
+		if (StyleDraw == DrawStyle.none) return;
 
 		#if UNITY_EDITOR  ||  UNITY_STANDALONE  ||  UNITY_WEBPLAYER 
 			startDraw = Input.GetKeyDown(KeyCode.Mouse0);
@@ -130,18 +135,18 @@ public class DrawingPhysics : MonoBehaviour {
 
 			//Add delay destroy
 			Destroy(newLineMesh, destroyTime);
-			switch (StateDraw)
+			switch (StyleDraw)
 			{
-				case DrawState.brick:
+				case DrawStyle.brick:
 					Destroy(newLineMesh.gameObject, 3);
 					break;
-				case DrawState.fire:
-				case DrawState.water:
+				case DrawStyle.fire:
+				case DrawStyle.water:
                     Destroy(newLineMesh.gameObject, 1);
 					break;
             }
 
-			if (StateDraw == DrawState.rope || StateDraw == DrawState.fire || StateDraw == DrawState.water || StateDraw == DrawState.brick)
+			if (StyleDraw == DrawStyle.rope || StyleDraw == DrawStyle.fire || StyleDraw == DrawStyle.water || StyleDraw == DrawStyle.brick)
 			{
 				for (int i = 0; i < newLineMesh.transform.childCount - 1; i++)
 				{
@@ -149,11 +154,13 @@ public class DrawingPhysics : MonoBehaviour {
 				}
 			}
 
-			StateDraw = DrawState.none;
+            LevelMng.inst.lineInfos.FirstOrDefault(x => x.style == StyleDraw).quantity--;
+			UIMng.inst.OnEndDrawing();
+			StyleDraw = DrawStyle.none;
 		}
 		
 		//Set LineRenderer and create it's colliders
-		if (isDrawing && brushDrawingClone && mouseMove() && GPMng.inst.Enegy>0)
+		if (isDrawing && brushDrawingClone && mouseMove() && LevelMng.inst.Enegy>0)
 		{
 			//Screen to WorldPoint
 			drawPos = cameras.ScreenToWorldPoint (new Vector3(Input.mousePosition.x, Input.mousePosition.y, cameraFar));
@@ -179,7 +186,7 @@ public class DrawingPhysics : MonoBehaviour {
 				colliderClone.transform.parent = newLineMesh.transform;
 				//Save last draw point
 				lastdrawPos = drawPos;
-				GPMng.inst.Enegy--;
+                LevelMng.inst.Enegy--;
 			}
 		}
 		
@@ -187,8 +194,7 @@ public class DrawingPhysics : MonoBehaviour {
 	int stateSelect;
 	public void SetStateDraw(int state)
 	{
-		stateSelect = state;
-
+        stateSelect = state;
         Invoke(nameof(_SetStateDraw), .2f);
 	}
     bool mouseMove()
@@ -202,21 +208,22 @@ public class DrawingPhysics : MonoBehaviour {
         switch (stateSelect)
         {
             case 1:
-                StateDraw = DrawState.walk;
+                StyleDraw = DrawStyle.walk;
                 break;
             case 2:
-                StateDraw = DrawState.water;
+                StyleDraw = DrawStyle.water;
                 break;
             case 3:
-                StateDraw = DrawState.fire;
+                StyleDraw = DrawStyle.fire;
                 break;
             case 4:
-                StateDraw = DrawState.rope;
+                StyleDraw = DrawStyle.rope;
                 break;
             case 5:
-                StateDraw = DrawState.brick;
+                StyleDraw = DrawStyle.brick;
                 break;
         }
+		UIMng.inst.SellectDraw();
     }
 	void _SetDrawStable(int stateSelect)
 	{
@@ -244,7 +251,7 @@ public class DrawingPhysics : MonoBehaviour {
 		Destroy(lineCollection);
 	}
 }
-public enum DrawState
+public enum DrawStyle
 { 
 	none = 0, walk = 1, water = 2, fire = 3, rope = 4, brick = 5
 }

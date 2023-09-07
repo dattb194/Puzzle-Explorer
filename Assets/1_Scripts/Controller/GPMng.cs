@@ -8,29 +8,16 @@ public class GPMng : MonoBehaviour
 {
     public static GPMng inst;
     public bool IsPlaying = false;
-    [SerializeField] int enegy;
 
-    public GameObject winDialog;
-    public GameObject loseDialog;
-    public int Enegy
-    {
-        set
-        {
-            enegy = value;
-            enegyDisplay.fillAmount = (float)value / maxEnegy;
-        }
-        get => enegy;
-    }
-    [SerializeField] int maxEnegy = 1000;
-
-    public Image enegyDisplay;
     private void Awake()
     {
         inst = this;
     }
     private void Start()
     {
-        Enegy = maxEnegy;
+        LevelMng.inst.LoadLevel();
+        DrawingPhysics.inst.Initialize();
+        UIMng.inst.SetbtnsDraw();
     }
     public void ReloadScene()
     {
@@ -43,11 +30,11 @@ public class GPMng : MonoBehaviour
     public void Win()
     {
         IsPlaying = false;
-        winDialog.SetActive(true);
+        UIMng.inst.Win();
     }
     public void Lose()
     {
         IsPlaying = false;
-        loseDialog.SetActive(true);
+        UIMng.inst.Lose();
     }
 }
