@@ -145,7 +145,7 @@ public class DrawingPhysics : MonoBehaviour {
 			{
 				for (int i = 0; i < newLineMesh.transform.childCount - 1; i++)
 				{
-					newLineMesh.transform.GetChild(i).GetComponent<Collider>().enabled = true;
+					newLineMesh.transform.GetChild(i).GetComponent<LineElement>().Active();
 				}
 			}
 

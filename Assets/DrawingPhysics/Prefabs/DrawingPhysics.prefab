@@ -30,7 +30,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 11
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &114567261027369356
 MonoBehaviour:
@@ -50,22 +50,26 @@ MonoBehaviour:
   - {fileID: 100000, guid: 5476315e42b078b44a414620262041c2, type: 3}
   - {fileID: 100000, guid: 4b2003bdaf1dc624dbe6c4f4976a5332, type: 3}
   - {fileID: 100000, guid: 7301b47d9279eeb4190e4a9e63c3952f, type: 3}
+  - {fileID: 100000, guid: 36a0a590f6cac4a4298d76679df9c710, type: 3}
   collidersPrefab:
   - {fileID: 0}
   - {fileID: 100000, guid: 84ceb902b41aa2049b9ebda988c01549, type: 3}
   - {fileID: 100000, guid: 4fb88fc5d3ab48940b039e2aeed8a023, type: 3}
   - {fileID: 100000, guid: a804d64d56388ed4c92d4fc6831c74bb, type: 3}
   - {fileID: 100000, guid: 3dccf8098a7a2b3438423118375cbd8c, type: 3}
+  - {fileID: 100000, guid: 24adf2786f6b15747b7529e026c87ea3, type: 3}
   lineMaterials:
   - {fileID: 0}
   - {fileID: 2100000, guid: 9257fad660745d34caa0de561393d341, type: 2}
   - {fileID: 2100000, guid: bccefbbbb84028e408cad617c9020c05, type: 2}
   - {fileID: 2100000, guid: 7b7cb9ee17c196d4fa4b02f4ebd97923, type: 2}
   - {fileID: 2100000, guid: 162cda795485a014cac142ebac58380c, type: 2}
+  - {fileID: 2100000, guid: 1f183ad14c33fc545b32967fe61a262a, type: 2}
   linePrefab: {fileID: 100000, guid: e73efe74f0bd333439a0c3bba93ce01b, type: 3}
   lineMaterial: {fileID: 2100000, guid: 84b9e1d19d11078d11005b9844295342, type: 2}
   colliderPrefab: {fileID: 100000, guid: 652e6523e397c65448f5b682367e2f9f, type: 3}
   width: 1
+  newLineMesh: {fileID: 0}
   destroyTime: 1000
   drawStable: 1
   isDrawing: 0
