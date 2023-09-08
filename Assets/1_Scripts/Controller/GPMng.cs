@@ -15,6 +15,21 @@ public class GPMng : MonoBehaviour
     }
     private void Start()
     {
+        //LevelMng.inst.LoadLevel();
+        //DrawingPhysics.inst.Initialize();
+        //UIMng.inst.SetbtnsDraw();
+        StartCoroutine(LoadLevel());
+    }
+    IEnumerator LoadLevel()
+    {
+        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(LevelMng.inst.ID.ToString(), LoadSceneMode.Additive);
+
+        // Wait until the asynchronous scene fully loads
+        while (!asyncLoad.isDone)
+        {
+            yield return null;
+        }
+
         LevelMng.inst.LoadLevel();
         DrawingPhysics.inst.Initialize();
         UIMng.inst.SetbtnsDraw();
