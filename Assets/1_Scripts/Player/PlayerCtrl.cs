@@ -29,6 +29,7 @@ public class PlayerCtrl : MonoBehaviour
     }
     private void Update()
     {
+        if (!GPMng.inst) return;
         if (!GPMng.inst.IsPlaying) return;
         Standby();
         AutoMove();
@@ -64,7 +65,6 @@ public class PlayerCtrl : MonoBehaviour
         rig.isKinematic = true;
     }
 
-    [SerializeField] Transform ropeDeteched = null;
     private void OnTriggerEnter(Collider other)
     {
         switch (other.gameObject.tag)
