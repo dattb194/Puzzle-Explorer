@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using TMPro.EditorUtilities;
+using UnityEngine;
 
 [System.Serializable]
 public class PlayerMovement
@@ -16,9 +17,12 @@ public class PlayerMovement
     // Khai báo một biến để lưu trữ trạng thái di chuyển của player
     public bool isMoving;
 
+    public bool isNotMove;
+
 
     // Hàm này được gọi mỗi khung hình
     float timeCheck = 0;
+    float timeCheck1 = 0;
     public void Update()
     {
         if (Vector3.Distance(trans.position, previousPosition) > .1f)
@@ -39,6 +43,20 @@ public class PlayerMovement
         else
         {
             timeCheck -= Time.deltaTime;
+        }
+
+        if (!isMoving)
+        {
+            timeCheck1 -= Time.deltaTime;
+            if (timeCheck1 <= 0)
+            {
+                isNotMove = true;
+            }
+        }
+        else
+        {
+            timeCheck1 = 1;
+            isNotMove = false;
         }
     }
 

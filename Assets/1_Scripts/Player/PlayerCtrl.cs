@@ -10,6 +10,9 @@ public class PlayerCtrl : MonoBehaviour
         set
         {
             stateBehavior = value;
+            {
+                GetComponent<PlayerAnimator>().Trigger(((int)value).ToString());
+            }
         }
         get => stateBehavior;
     }
@@ -18,6 +21,7 @@ public class PlayerCtrl : MonoBehaviour
     Rigidbody rig;
 
     public List<Transform> ropesClimbed = null;
+    [SerializeField] CheckOnLandFace checkOnLandFace;
     void Start()
     {
         StateBehavior = PlayerStateBehavior.standby;
@@ -34,6 +38,7 @@ public class PlayerCtrl : MonoBehaviour
         Standby();
         AutoMove();
         CheckIdle();
+        Falling();
     }
     public void AutoMove()
     {
@@ -58,11 +63,25 @@ public class PlayerCtrl : MonoBehaviour
         var climb = new Climb(rope, transform);
         climb.DoClimbWithRope(() =>
         {
-            StateBehavior = PlayerStateBehavior.move;
-            rope.gameObject.SetActive(false);
+            StateBehavior = PlayerStateBehavior.falling;
+            rope.gameObject.SetActive(false); 
+            rig.isKinematic = false;
+            Invoke(nameof(EndFalling), 1);
             //ropeDeteched = null;
         });
         rig.isKinematic = true;
+    }
+    void Falling()
+    {
+        if (StateBehavior != PlayerStateBehavior.falling) return;
+        if (checkOnLandFace.isOnFace)
+        {
+            StateBehavior = PlayerStateBehavior.falling_2;
+        }
+    }
+    void EndFalling()
+    {
+        StateBehavior = PlayerStateBehavior.move;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -94,11 +113,15 @@ public class PlayerCtrl : MonoBehaviour
     [SerializeField] PlayerMovement playerMovement;
     void CheckIdle()
     {
-        if (playerMovement.trans == null) playerMovement = new PlayerMovement(transform);
+        if (playerMovement.trans == null)
+            playerMovement = new PlayerMovement(transform);
         playerMovement.Update();
+
+        if (playerMovement.isNotMove)
+            StateBehavior = PlayerStateBehavior.standby;
     }
 }
 public enum PlayerStateBehavior
 {
-    standby, move, climb
+    standby = 1, move = 2, climb = 3, falling_1 = 4, falling_2 = 5, win = 6, lose = 7, falling = 7
 }

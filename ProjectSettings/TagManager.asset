@@ -9,6 +9,7 @@ TagManager:
   - lineFire
   - lineWater
   - player
+  - landFace
   layers:
   - Default
   - TransparentFX

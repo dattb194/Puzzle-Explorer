@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 6249805113813785425}
   m_Layer: 0
   m_Name: land_face_half_right
-  m_TagString: Untagged
+  m_TagString: landFace
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
