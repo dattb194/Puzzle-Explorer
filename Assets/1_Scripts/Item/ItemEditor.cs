@@ -16,5 +16,5 @@ public enum TypeItem
     gold_barrel,
     lava,
     win_point,
-
+    enemy_1
 }

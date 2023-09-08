@@ -33,5 +33,6 @@ public class LevelMng : MonoBehaviour
         lineInfos.Clear();
         lineInfos = levelInfo.lineInfos;
         LevelEditor.inst.Load(ID);
+        CameraCtrl.inst.SetData(levelInfo.cameraConfig);
     }
 }

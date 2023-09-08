@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
+using log4net.Core;
 
 public class LevelEdiorScript : MonoBehaviour
 {
@@ -21,5 +22,11 @@ public class LevelEdiorScript : MonoBehaviour
     {
         levelEditor = FindAnyObjectByType<LevelEditor>();
         levelEditor.Load();
+    }
+    [MenuItem("Level Editor/Delete level now from scene")]
+    static void DeleteLevelNowFromScene()
+    {
+        levelEditor = FindAnyObjectByType<LevelEditor>();
+        levelEditor.DeleteLevelNowFromScene();
     }
 }
