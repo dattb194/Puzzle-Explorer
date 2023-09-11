@@ -9,12 +9,17 @@ public class CheckOnLandFace : MonoBehaviour
     private void OnTriggerStay(Collider other)
     {
         if (isOnFace) return;
-        if (other.gameObject.tag == "landFace")
-            isOnFace = true;
+        isOnFace = true;
+        //switch (other.gameObject.tag)
+        //{
+        //    case "landFace":
+        //        isOnFace = true;
+        //        break;
+        //}
     }
     private void OnTriggerExit(Collider other)
     {
-        if (other.gameObject.tag == "landFace")
+        //if (other.gameObject.tag == "landFace")
             isOnFace = false;
     }
 }

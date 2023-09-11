@@ -37,7 +37,6 @@ public class UIMng : MonoBehaviour
     {
         foreach (var item in buttonDraws)
         {
-            print(item.style +"        "+ DrawingPhysics.inst.StyleDraw);
             if (item.style == DrawingPhysics.inst.StyleDraw)
                 item.Sellecting();
             else

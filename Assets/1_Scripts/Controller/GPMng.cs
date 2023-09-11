@@ -15,9 +15,6 @@ public class GPMng : MonoBehaviour
     }
     private void Start()
     {
-        //LevelMng.inst.LoadLevel();
-        //DrawingPhysics.inst.Initialize();
-        //UIMng.inst.SetbtnsDraw();
         StartCoroutine(LoadLevel());
     }
     IEnumerator LoadLevel()
