@@ -1,5 +1,7 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Android.Types;
 using Unity.VisualScripting;
 using UnityEditor.Purchasing;
 using UnityEngine;
@@ -49,7 +51,6 @@ public class PlayerCtrl : MonoBehaviour
 
         if (rig == null)
             rig = gameObject.AddComponent<Rigidbody>();
-
     }
     public void ForceMove()
     {
@@ -63,9 +64,9 @@ public class PlayerCtrl : MonoBehaviour
         if (!GPMng.inst) return;
         if (!GPMng.inst.IsPlaying) return;
 
+
         behavior.Moving();
         playerMovement.Update();
-
 
         switch (StateBehavior)
         {
@@ -77,14 +78,22 @@ public class PlayerCtrl : MonoBehaviour
             case PlayerStateBehavior.idle:
                 if (!playerMovement.isNotMove)
                     StateBehavior = PlayerStateBehavior.move;
+
+                behavior.CheckJump();
+
                 break;
 
             case PlayerStateBehavior.move:
-
                 if (checkOnLandFace.isOnFace == false)
                     StateBehavior = PlayerStateBehavior.falling;
                 if (playerMovement.isNotMove)
+                {
                     StateBehavior = PlayerStateBehavior.idle;
+                    timeCheckLose = 5;
+                }
+                else
+                    timeCheckLose = 0;
+
                 break;
 
             case PlayerStateBehavior.falling:
@@ -96,6 +105,22 @@ public class PlayerCtrl : MonoBehaviour
             case PlayerStateBehavior.climb:
                 behavior.Climbing();
                 break;
+            case PlayerStateBehavior.falling_2:
+                behavior.Climbing();
+                break;
+        }
+
+        CheckLose();
+    }
+
+    float timeCheckLose = 0;
+    void CheckLose()
+    {
+        if (timeCheckLose > 0)
+        {
+            timeCheckLose -= Time.deltaTime;
+            if (timeCheckLose <= 0)
+                GPMng.inst.Lose();
         }
     }
 

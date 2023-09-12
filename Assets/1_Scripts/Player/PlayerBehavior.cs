@@ -34,6 +34,25 @@ public class PlayerBehavior : MonoBehaviour
         transform.position += new Vector3(direction * Time.deltaTime, 0, 0);
         playerCtrl.PlayerMovement.Update();
     }
+
+    public float timeCheckJump = 1;
+    public void CheckJump()
+    {
+        if (!playerCtrl.PlayerMovement.isNotMove)
+        {
+            timeCheckJump = 0;
+            return;
+        }
+
+        if (timeCheckJump < 1)
+        {
+            timeCheckJump += Time.deltaTime;
+            return;
+        }
+
+        transform.position += new Vector3(direction / 10, direction / 20, 0);
+        timeCheckJump = 0;
+    }
     public void ForceClimb(Transform rope, Transform _posClimb)
     {
         if (posClimb == null)

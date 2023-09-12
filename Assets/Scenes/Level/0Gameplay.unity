@@ -1432,7 +1432,7 @@ MonoBehaviour:
       followPlayer: 0
     lineInfos: []
     items: []
-  enegy: 0
+  enegy: 100
   MaxEnegy: 1000
   lineInfos: []
 --- !u!4 &878378926
@@ -2553,6 +2553,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   IsPlaying: 0
+  itemPrefab: []
 --- !u!4 &1689146497
 Transform:
   m_ObjectHideFlags: 0

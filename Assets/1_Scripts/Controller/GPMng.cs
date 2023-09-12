@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -8,6 +9,10 @@ public class GPMng : MonoBehaviour
 {
     public static GPMng inst;
     public bool IsPlaying = false;
+
+    public UnityAction onLoadLevelDone;
+
+    public List<ItemEditor> itemPrefab;
 
     private void Awake()
     {
@@ -26,6 +31,13 @@ public class GPMng : MonoBehaviour
         {
             yield return null;
         }
+
+        var items = FindObjectsOfType<ItemEditor>();
+        for (int i = 0; i < items.Length; i++)
+        {
+            items[i].LoadFrefab();
+        }
+        //onLoadLevelDone?.Invoke();
 
         LevelMng.inst.LoadLevel();
         DrawingPhysics.inst.Initialize();
