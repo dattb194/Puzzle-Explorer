@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Diagnostics.Tracing;
 using Unity.VisualScripting;
 using System.Linq;
+using UnityEngine.EventSystems;
 
 public class DrawingPhysics : MonoBehaviour {
 	public static DrawingPhysics inst;
@@ -85,9 +86,10 @@ public class DrawingPhysics : MonoBehaviour {
     void Draw ()
 	{
 		if (StyleDraw == DrawStyle.none) return;
+		if (EventSystem.current.IsPointerOverGameObject()) return;
 
-		#if UNITY_EDITOR  ||  UNITY_STANDALONE  ||  UNITY_WEBPLAYER 
-			startDraw = Input.GetKeyDown(KeyCode.Mouse0);
+#if UNITY_EDITOR || UNITY_STANDALONE || UNITY_WEBPLAYER
+            startDraw = Input.GetKeyDown(KeyCode.Mouse0);
 			endDraw = Input.GetKeyUp(KeyCode.Mouse0);
 		#else  // For touch-devices
 			if (Input.touchCount > 0) 
@@ -176,7 +178,7 @@ public class DrawingPhysics : MonoBehaviour {
 
             //GenerMesh(lineRenderer.gameObject, lineRenderer);
             LevelMng.inst.lineInfos.FirstOrDefault(x => x.style == StyleDraw).quantity--;
-			UIMng.inst.OnEndDrawing();
+			UIMng.inst.gameplayDisplay.OnEndDrawing();
 			StyleDraw = DrawStyle.none;
 		}
 		
@@ -244,7 +246,7 @@ public class DrawingPhysics : MonoBehaviour {
                 StyleDraw = DrawStyle.brick;
                 break;
         }
-		UIMng.inst.SellectDraw();
+		UIMng.inst.gameplayDisplay.SellectDraw();
     }
 	void _SetDrawStable(int stateSelect)
 	{

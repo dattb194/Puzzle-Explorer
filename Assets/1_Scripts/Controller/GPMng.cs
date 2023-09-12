@@ -41,7 +41,6 @@ public class GPMng : MonoBehaviour
 
         LevelMng.inst.LoadLevel();
         DrawingPhysics.inst.Initialize();
-        UIMng.inst.SetbtnsDraw();
     }
     public void ReloadScene()
     {
