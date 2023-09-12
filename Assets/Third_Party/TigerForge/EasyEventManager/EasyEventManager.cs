@@ -48,7 +48,7 @@ namespace TigerForge
         #region " START LISTENING "
 
         /// <summary>
-        /// Starts the listening to an event with the given name. If that event is detected, the callBack function is executed. Optionally, you can define a unique ID in the callBackID paramenter.
+        /// Starts the listening to an event with the given name. If that event is detected, the callBack function is executed. Optionally, you can define a unique ID_Editing in the callBackID paramenter.
         /// </summary>
         public static void StartListening(string eventName, UnityAction callBack, string callBackID = "")
         {
@@ -73,7 +73,7 @@ namespace TigerForge
         }
 
         /// <summary>
-        /// Starts the listening to an event with the given name and enabling the use of filters on events emission. If that event is detected, and optional filters are satisfied, the callBack function is executed. Optionally, you can define a unique ID in the callBackID paramenter.
+        /// Starts the listening to an event with the given name and enabling the use of filters on events emission. If that event is detected, and optional filters are satisfied, the callBack function is executed. Optionally, you can define a unique ID_Editing in the callBackID paramenter.
         /// </summary>
         public static void StartListening(string eventName, GameObject target, UnityAction callBack, string callBackID = "")
         {
@@ -97,7 +97,7 @@ namespace TigerForge
         #region " STOP LISTENING "
 
         /// <summary>
-        /// Stop listening to the event with the given name and the memory occupied by this event is cleared. The callBack function must be saved by setting 'callBackID' parameter with a unique ID in the StartListening() method.
+        /// Stop listening to the event with the given name and the memory occupied by this event is cleared. The callBack function must be saved by setting 'callBackID' parameter with a unique ID_Editing in the StartListening() method.
         /// </summary>
         public static void StopListening(string eventName, string callBackID)
         {

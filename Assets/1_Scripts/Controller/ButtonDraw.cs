@@ -22,12 +22,10 @@ public class ButtonDraw : MonoBehaviour
 
     public void Sellecting()
     {
-        print($"Sellecting {style.ToString()}");
         GetComponent<Image>().color = Color.red;    
     }
     public void UnSellect()
     {
-        print($"UnSellect {style.ToString()}");
         GetComponent<Image>().color = Color.white;
     }
     private void Update()

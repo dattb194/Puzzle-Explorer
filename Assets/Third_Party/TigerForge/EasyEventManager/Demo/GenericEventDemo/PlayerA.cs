@@ -15,7 +15,7 @@ public class PlayerA : MonoBehaviour
     void OnceListenerCallBack()
     {
         Debug.Log("<color=cyan>I am PlayerA! Emitter said: " + EventManager.GetString("PRESSED_F")  + "</color>\n");
-        Debug.Log("<color=cyan>If you press [F] again, I won't reply because I stopped the listening, just specifying the callBack ID.</color>\n");
+        Debug.Log("<color=cyan>If you press [F] again, I won't reply because I stopped the listening, just specifying the callBack ID_Editing.</color>\n");
 
         EventManager.StopListening("PRESSED_F", "ONCE");
     }

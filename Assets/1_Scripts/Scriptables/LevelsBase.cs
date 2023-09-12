@@ -9,11 +9,10 @@ public class LevelsBase : ScriptableObject
     public List<LevelJson> levels;
     public void UpdateLevel(LevelInfo levelInfo)
     {
-
         if (levels.Exists(x => x.ID == levelInfo.ID))
             levels.Remove(levels.FirstOrDefault(x => x.ID == levelInfo.ID));
 
-        var lv = new LevelJson();
+        LevelJson lv = new LevelJson();
         lv.ID = levelInfo.ID;
         lv.Json = JsonUtility.ToJson(levelInfo);
 
@@ -21,13 +20,21 @@ public class LevelsBase : ScriptableObject
     }
     public LevelInfo GetByID(int ID)
     {
-        if (levels.Exists(x => x.ID == ID))
+        List<LevelJson> list = new List<LevelJson>();
+        foreach (var item in levels)
         {
-            var lv = levels.FirstOrDefault(x => x.ID == ID);
-
-            return JsonUtility.FromJson<LevelInfo>(lv.Json);
+            list.Add(item);
         }
-        Debug.LogError("Level ID not found!");
+
+        LevelJson lv = list.FirstOrDefault(x => x.ID == ID);
+
+        if (lv != null)
+        {
+            LevelInfo result = JsonUtility.FromJson<LevelInfo>(lv.Json);
+            return result;
+        }
+
+        Debug.LogError("Level ID_Editing not found!");
         return null;
     }
 }

@@ -7,8 +7,9 @@ public class LevelInfo
 {
     public int ID;
     public int MaxEnegy;
+    public CameraConfig cameraConfig;
     public List<LineInfo> lineInfos;
-    public List<ItemInfo> items;
+    [HideInInspector] public List<ItemInfo> items;
     public string ToJson()
     {
         return JsonUtility.ToJson(this);
@@ -40,4 +41,9 @@ public class LineInfo
 {
     public DrawStyle style;
     public int quantity;
+}
+[System.Serializable]
+public class CameraConfig
+{
+    public bool followPlayer = false;
 }

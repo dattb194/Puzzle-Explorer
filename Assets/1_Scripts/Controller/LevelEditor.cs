@@ -10,15 +10,14 @@ public class LevelEditor : MonoBehaviour
     {
         inst = this;
     }
-    public int ID;
+    //public int ID_Editing;
     public LevelInfo levelInfo;
-    public LevelsBase levelsBase;
+    public LevelsBase levelsBase => Resources.Load<LevelsBase>("Levels");
 
     public List<ItemEditor> itemPrefab;
 
     public void Save()
     {
-        levelInfo.ID = ID;
         levelInfo.items.Clear();
         for (int i = 0; i < transform.childCount; i++)
         {
@@ -41,10 +40,12 @@ public class LevelEditor : MonoBehaviour
     }
     public void Load()
     {
-        Load(ID);
+        Load(levelInfo.ID);
+        gameObject.name = $"Level {levelInfo.ID}";
     }
     public void Load(int ID)
     {
+        DeleteLevelNowFromScene();
         levelInfo = levelsBase.GetByID(ID);
 
         foreach (var item in levelInfo.items)
@@ -55,5 +56,18 @@ public class LevelEditor : MonoBehaviour
         }
 
         print("Load level");
+    }
+    public void DeleteLevelNowFromScene()
+    {
+        var trans = new List<GameObject>();
+        for (int i = 0; i < transform.childCount; i++)
+        {
+            trans.Add(transform.GetChild(i).gameObject);
+        }
+
+        for (int i = 0; i < trans.Count; i++)
+        {
+            DestroyImmediate(trans[i].gameObject);
+        }
     }
 }

@@ -1,49 +1,46 @@
-﻿using UnityEngine;
+﻿using TMPro.EditorUtilities;
+using Unity.VisualScripting;
+using UnityEngine;
 
 [System.Serializable]
 public class PlayerMovement
 {
     public Transform trans;
-    public PlayerMovement(Transform trans)
+    public float biendo = .2f;
+    public MonoBehaviour monoBehaviour;
+    public PlayerMovement(MonoBehaviour monoBehaviour)
     {
-        this.trans = trans;
+        this.monoBehaviour = monoBehaviour;
+        this.trans = monoBehaviour.transform;
         previousPosition = trans.position;
+        isNotMove = false;
     }
 
-    // Khai báo một biến để lưu trữ vị trí cũ của player
     private Vector3 previousPosition;
 
-    // Khai báo một biến để lưu trữ trạng thái di chuyển của player
-    public bool isMoving;
+    public bool isNotMove;
 
-
-    // Hàm này được gọi mỗi khung hình
     float timeCheck = 0;
     public void Update()
     {
-        if (Vector3.Distance(trans.position, previousPosition) > .1f)
-        {
-            // Nếu có, thì gán trạng thái di chuyển là true
-            isMoving = true;
-        }
-        else
-        {
-            isMoving = false;
-        }
 
-        if (timeCheck <= 0)
-        {
-            timeCheck = 1;
-            previousPosition = trans.position;
-        }
-        else
+        if (timeCheck > 0)
         {
             timeCheck -= Time.deltaTime;
         }
+        else
+        {
+            Check();
+            previousPosition = trans.position;
+        }
     }
-
-    public bool IsMoving()
+    public void Check()
     {
-        return isMoving;
+        timeCheck = 1;
+        if (Vector3.Distance(trans.position, previousPosition) <= biendo)
+            isNotMove = true;
+        else
+            isNotMove = false;
+
     }
 }

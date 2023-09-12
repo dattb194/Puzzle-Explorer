@@ -46,7 +46,8 @@ public class DrawingPhysics : MonoBehaviour {
 			linePrefab = linesPrefab[((int)value)];
 			colliderPrefab = collidersPrefab[(int)value];
 			lineMaterial = lineMaterials[(int)value];
-			_SetDrawStable((int)value);
+
+            _SetDrawStable((int)value);
 		}
 	}
 
@@ -68,6 +69,15 @@ public class DrawingPhysics : MonoBehaviour {
 			lineCollection = new GameObject("PhysicLines");
 		}
 	}
+	void GenerMesh(GameObject go, LineRenderer goLineRenderer)
+	{
+        Mesh lineBakedMesh = new Mesh(); //Create a new Mesh (Empty at the moment)
+        go.AddComponent<MeshFilter>();
+        go.GetComponent<MeshFilter>().mesh = lineBakedMesh;
+        goLineRenderer.BakeMesh(lineBakedMesh, Camera.main, true); //Bake the line mesh to our mesh variable
+        go.AddComponent<MeshCollider>().sharedMesh = lineBakedMesh; //Set the baked mesh to the MeshCollider
+        go.GetComponent<MeshCollider>().convex = false;
+    }
     private void Update()
     {
 		Draw();
@@ -111,7 +121,8 @@ public class DrawingPhysics : MonoBehaviour {
 				}
 				newLineMesh.transform.position = transform.position;
 				newLineMesh.transform.SetParent(lineCollection.transform);
-			}
+                width = linePrefab.GetComponent<LineRenderer>().startWidth;
+            }
 		}
 		//When End Draw
 		if (endDraw)
@@ -137,7 +148,11 @@ public class DrawingPhysics : MonoBehaviour {
 			Destroy(newLineMesh, destroyTime);
 			switch (StyleDraw)
 			{
-				case DrawStyle.brick:
+				case DrawStyle.walk:
+                    TubeRenderer tubeRenderer = lineRenderer.AddComponent<TubeRenderer>();
+                    tubeRenderer.SetData(lineRenderer);
+					break;
+                case DrawStyle.brick:
 					Destroy(newLineMesh.gameObject, 3);
 					break;
 				case DrawStyle.fire:
@@ -154,6 +169,12 @@ public class DrawingPhysics : MonoBehaviour {
 				}
 			}
 
+			if (StyleDraw == DrawStyle.walk)
+			{
+				
+			}
+
+            //GenerMesh(lineRenderer.gameObject, lineRenderer);
             LevelMng.inst.lineInfos.FirstOrDefault(x => x.style == StyleDraw).quantity--;
 			UIMng.inst.OnEndDrawing();
 			StyleDraw = DrawStyle.none;

@@ -5,7 +5,7 @@ using UnityEngine;
 public class LevelMng : MonoBehaviour
 {
     public static LevelMng inst;
-    public int ID;
+    public int ID => levelInfo.ID;
     public LevelInfo levelInfo;
     private void Awake()
     {
@@ -27,11 +27,13 @@ public class LevelMng : MonoBehaviour
 
     public void LoadLevel()
     {
-        levelInfo = LevelEditor.inst.levelsBase.GetByID(ID);
+        print(111111);
+        levelInfo = LevelEditor.inst.levelInfo;
         MaxEnegy = levelInfo.MaxEnegy;
         Enegy = MaxEnegy;
         lineInfos.Clear();
         lineInfos = levelInfo.lineInfos;
-        LevelEditor.inst.Load(ID);
+        //LevelEditor.inst.Load(ID);
+        CameraCtrl.inst.SetData(levelInfo.cameraConfig);
     }
 }
