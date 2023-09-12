@@ -1,9 +1,5 @@
-using DG.Tweening;
-using System.Collections;
+
 using System.Collections.Generic;
-using Unity.Android.Types;
-using Unity.VisualScripting;
-using UnityEditor.Purchasing;
 using UnityEngine;
 
 public class PlayerCtrl : MonoBehaviour
@@ -64,9 +60,11 @@ public class PlayerCtrl : MonoBehaviour
         if (!GPMng.inst) return;
         if (!GPMng.inst.IsPlaying) return;
 
-
-        behavior.Moving();
-        playerMovement.Update();
+        if (DrawingPhysics.inst.StyleDraw == DrawStyle.none)
+        {
+            behavior.Moving();
+            playerMovement.Update();
+        }
 
         switch (StateBehavior)
         {
@@ -106,7 +104,7 @@ public class PlayerCtrl : MonoBehaviour
                 behavior.Climbing();
                 break;
             case PlayerStateBehavior.falling_2:
-                behavior.Climbing();
+                
                 break;
         }
 
