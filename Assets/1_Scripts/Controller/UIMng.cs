@@ -12,53 +12,32 @@ public class UIMng : MonoBehaviour
         inst = this;
     }
 
-    public Image enegyDisplay;
     public GameObject winDialog;
     public GameObject loseDialog;
+    public GameplayDisplay gameplayDisplay;
+    public MenuDisplay menuDisplay;
 
-    public List<ButtonDraw> buttonDraws;
 
     private void Update()
     {
-        if (GPMng.inst.IsPlaying)
-        {
-            enegyDisplay.fillAmount = (float)LevelMng.inst.Enegy / LevelMng.inst.MaxEnegy;
-        }
+        
     }
 
-    public void SetbtnsDraw()
+    public void OnStartGame()
     {
-        for (int i = 0; i < LevelMng.inst.lineInfos.Count; i++)
-        {
-            buttonDraws[i].SetData(LevelMng.inst.lineInfos[i]);
-        }
+        menuDisplay.gameObject.SetActive(false);
+        gameplayDisplay.SetData();
     }
-    public void SellectDraw()
-    {
-        foreach (var item in buttonDraws)
-        {
-            if (item.style == DrawingPhysics.inst.StyleDraw)
-                item.Sellecting();
-            else
-                item.UnSellect();
-        }
-    }
-
-    public void OnEndDrawing()
-    {
-        foreach (var item in buttonDraws)
-        {
-            item.UnSellect();
-        }
-        SetbtnsDraw();
-    }
+    
 
     public void Win()
     {
+        gameplayDisplay.gameObject.SetActive(false);
         winDialog.SetActive(true);
     }
     public void Lose()
     {
+        gameplayDisplay.gameObject.SetActive(false);
         loseDialog.SetActive(true);
     }
 }

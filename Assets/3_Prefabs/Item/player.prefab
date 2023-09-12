@@ -71,7 +71,7 @@ Transform:
   - {fileID: 5760603220177753137}
   - {fileID: 4396578222045125000}
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &5756114956198090336
 MeshFilter:
@@ -187,15 +187,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   stateBehavior: 0
   posClimb: {fileID: 8703677442429579143, guid: 89540df50a4e88f4d895790f74419f75, type: 3}
-  direction: 0.5
   ropesClimbed: []
   playerMovement:
     trans: {fileID: 0}
     biendo: 0
     monoBehaviour: {fileID: 0}
-    isMoving: 0
     isNotMove: 0
-  rig: {fileID: 0}
   checkOnLandFace: {fileID: 7384144719574630531}
 --- !u!114 &7715401541398501947
 MonoBehaviour:
@@ -222,6 +219,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6563c56d6a6ee244092e9ece26d8532a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  moveMotion: 0
+  giatoc: 1
+  direction: 1
+  timeCheckJump: 1
 --- !u!1 &196116631923382140
 GameObject:
   m_ObjectHideFlags: 0
@@ -2564,8 +2565,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7899751259000857439}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.8059, z: 0}
-  m_LocalScale: {x: 0.20691127, y: 0.54470277, z: 0.11098889}
+  m_LocalPosition: {x: 0, y: -0.933, z: 0}
+  m_LocalScale: {x: 0.36818084, y: 0.29043552, z: 0.3997075}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1213819630331634491}
@@ -2586,7 +2587,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7899751259000857439}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1

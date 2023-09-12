@@ -48,11 +48,11 @@ public class TubeRenderer : MonoBehaviour
     private Vector3[] crossPoints;
     private int lastCrossSegments;
     private float lastRebuildTime = 0;
-    private Mesh mesh = new Mesh();
+    private Mesh mesh;
     private bool colliderExists = false;
     private bool usingBumpmap = false;
 
-    public Renderer ren => GetComponent<Renderer>();
+    //public Renderer ren => GetComponent<Renderer>();
     public void Reset()
     {
         //vertices = new TubeVertex[2];
@@ -61,34 +61,36 @@ public class TubeRenderer : MonoBehaviour
     }
     public void SetData(LineRenderer line)
     {
+        mesh = new Mesh();
         vertices = new TubeVertex[line.positionCount];
         for (int i = 0; i < vertices.Length; i++)
         {
             vertices[i] = new TubeVertex(line.GetPosition(i), (float)line.startWidth/2, Color.white);
         }
+        GenMesh();
     }
     void Start()
     {
-        mesh = new Mesh();
-        Reset();
-        gameObject.AddComponent(typeof(MeshFilter));
-        MeshRenderer mr = gameObject.AddComponent(typeof(MeshRenderer)) as MeshRenderer;
-        mr.material = material;
-        if (material)
-        {
-            if (material.GetTexture("_BumpMap")) usingBumpmap = true;
-        }
+        //mesh = new Mesh();
+        //Reset();
+        //gameObject.AddComponent(typeof(MeshFilter));
+        //MeshRenderer mr = gameObject.AddComponent(typeof(MeshRenderer)) as MeshRenderer;
+        //mr.material = material;
+        //if (material)
+        //{
+        //    if (material.GetTexture("_BumpMap")) usingBumpmap = true;
+        //}
     }
 
-    void LateUpdate()
+    void GenMesh()
     {
-        if (vertices.Length <= 1)
-        {
-            ren.enabled = false;
-            return;
-        }
+        //if (vertices.Length <= 1)
+        //{
+        //    ren.enabled = false;
+        //    return;
+        //}
 
-        ren.enabled = true;
+        //ren.enabled = false;
         if (crossSegments != lastCrossSegments)
         {
             crossPoints = new Vector3[crossSegments];
@@ -149,23 +151,25 @@ public class TubeRenderer : MonoBehaviour
             mesh.tangents = CalculateTangents(meshVertices);
         mesh.uv = uvs;
 
-        if (useMeshCollision)
-        {
-            if (colliderExists)
-            {
-                (gameObject.GetComponent(typeof(MeshCollider)) as MeshCollider).sharedMesh = mesh;
-            }
-            else
-            {
-                gameObject.AddComponent(typeof(MeshCollider));
-                colliderExists = true;
-            }
-        }
+        //if (useMeshCollision)
+        //{
+        //    if (colliderExists)
+        //    {
+        //        (gameObject.GetComponent(typeof(MeshCollider)) as MeshCollider).sharedMesh = mesh;
+        //    }
+        //    else
+        //    {
+        //        gameObject.AddComponent(typeof(MeshCollider));
+        //        colliderExists = true;
+        //    }
+        //}
 
-        (GetComponent(typeof(MeshFilter)) as MeshFilter).mesh = mesh;
+        //(GetComponent(typeof(MeshFilter)) as MeshFilter).mesh = mesh;
         MeshCollider collider = gameObject.AddComponent<MeshCollider>();
         collider.sharedMesh = mesh;
         collider.isTrigger = false;
+
+        //ren.enabled = false;
     }
 
 
