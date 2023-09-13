@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: aac18b4a2aad6074ab4210ddfcb4610c
+guid: 31010d2a9acc24a4789f00d183b27c9f
 TrueTypeFontImporter:
   externalObjects: {}
   serializedVersion: 4
@@ -9,7 +9,7 @@ TrueTypeFontImporter:
   characterPadding: 1
   includeFontData: 1
   fontNames:
-  - Coiny
+  - Alfa Slab One
   fallbackFontReferences: []
   customCharacters: 
   fontRenderingMode: 0
