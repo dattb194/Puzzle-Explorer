@@ -49,6 +49,7 @@ public class DrawingPhysics : MonoBehaviour {
 			lineMaterial = lineMaterials[(int)value];
 
             _SetDrawStable((int)value);
+
 		}
 	}
 

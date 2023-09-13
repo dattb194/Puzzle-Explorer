@@ -26,8 +26,8 @@ public class MenuDisplay : MonoBehaviour
     
     }
     public void Stage()
-    { 
-    
+    {
+        UIMng.inst.stageDisplay.SetData();
     }
     public void Settings()
     { 
