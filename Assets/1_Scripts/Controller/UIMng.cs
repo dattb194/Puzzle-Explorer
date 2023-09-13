@@ -16,6 +16,7 @@ public class UIMng : MonoBehaviour
     public GameObject loseDialog;
     public GameplayDisplay gameplayDisplay;
     public MenuDisplay menuDisplay;
+    public StageDisplay stageDisplay;
 
 
     private void Update()

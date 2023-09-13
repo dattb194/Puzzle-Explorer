@@ -14,17 +14,30 @@ public class GPMng : MonoBehaviour
 
     public List<ItemEditor> itemPrefab;
 
+    GameConfig gameConfig => Resources.Load<GameConfig>("Config/Game config");
+
     private void Awake()
     {
         inst = this;
     }
     private void Start()
     {
-        StartCoroutine(LoadLevel());
+        if (gameConfig.levelSet > 0)
+        {
+            LevelMng.inst.LevelPlaying = gameConfig.levelSet;
+            gameConfig.levelSet = 0;
+        }
+        if (gameConfig.stageSet > 0)
+        {
+            LevelMng.inst.StagePlaying = gameConfig.stageSet;
+            gameConfig.stageSet = 0;
+        }
+
+        StartCoroutine(LoadLevelPlaying());
     }
-    IEnumerator LoadLevel()
+    IEnumerator LoadLevelPlaying()
     {
-        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(LevelMng.inst.ID.ToString(), LoadSceneMode.Additive);
+        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(LevelMng.inst.LevelPlaying.ToString(), LoadSceneMode.Additive);
 
         // Wait until the asynchronous scene fully loads
         while (!asyncLoad.isDone)
@@ -54,6 +67,11 @@ public class GPMng : MonoBehaviour
     {
         IsPlaying = false;
         UIMng.inst.Win();
+        LevelMng.inst.LevelPlaying++;
+        if (LevelMng.inst.LevelPlaying > LevelMng.inst.LevelUnlocked)
+        LevelMng.inst.LevelUnlocked = LevelMng.inst.LevelPlaying;
+        LevelMng.inst.LevelPlaying ++;
+
     }
     public void Lose()
     {
