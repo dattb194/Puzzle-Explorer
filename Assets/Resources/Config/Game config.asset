@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fdf5223a9e8ad734480147157035fe65, type: 3}
   m_Name: Game config
   m_EditorClassIdentifier: 
+  deleteAllPP: 0
   levelSet: 0
   stageSet: 0
   maxStage: 6

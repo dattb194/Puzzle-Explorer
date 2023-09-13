@@ -50,6 +50,7 @@ public class StageDisplay : MonoBehaviour
     {
         int min = StageViewing * 10 - 9;
         txtLevel.text = $"Level {min} - {min + 9}";
+        txtStageTitle.text = StageName();
         int indexCard = min;
         for (int i = 0; i < cards.Count; i++)
         {
@@ -57,5 +58,18 @@ public class StageDisplay : MonoBehaviour
             cards[i].Setdata(indexCard, indexCard <= LevelMng.inst.LevelUnlocked);
             indexCard++;
         }
+    }
+    public string StageName()
+    {
+        switch (stageViewing)
+        {
+            case 1: return "Jungle";
+            case 2: return "Desert";
+            case 3: return "Volcano";
+            case 4: return "Tomb";
+            case 5: return "Ice Mountaint";
+            
+        }
+        return "";
     }
 }

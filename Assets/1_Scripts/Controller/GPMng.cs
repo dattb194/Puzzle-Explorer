@@ -22,9 +22,18 @@ public class GPMng : MonoBehaviour
     }
     private void Start()
     {
+        if (gameConfig.deleteAllPP)
+        {
+            PlayerPrefs.DeleteAll();
+            gameConfig.deleteAllPP = false;
+        }
         if (gameConfig.levelSet > 0)
         {
             LevelMng.inst.LevelPlaying = gameConfig.levelSet;
+
+            if (LevelMng.inst.LevelPlaying > LevelMng.inst.LevelUnlocked)
+                LevelMng.inst.LevelUnlocked = LevelMng.inst.LevelPlaying;
+
             gameConfig.levelSet = 0;
         }
         if (gameConfig.stageSet > 0)
@@ -68,9 +77,9 @@ public class GPMng : MonoBehaviour
         IsPlaying = false;
         UIMng.inst.Win();
         LevelMng.inst.LevelPlaying++;
+
         if (LevelMng.inst.LevelPlaying > LevelMng.inst.LevelUnlocked)
-        LevelMng.inst.LevelUnlocked = LevelMng.inst.LevelPlaying;
-        LevelMng.inst.LevelPlaying ++;
+            LevelMng.inst.LevelUnlocked = LevelMng.inst.LevelPlaying;
 
     }
     public void Lose()

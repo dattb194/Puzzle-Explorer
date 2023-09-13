@@ -35,7 +35,7 @@ public class LevelMng : MonoBehaviour
         set
         {
             levelUnlocked = value;
-            PlayerPrefs.SetInt(PPKey.LevelPlaying, value);
+            PlayerPrefs.SetInt(PPKey.LevelUnlocked, value);
         }
     }
     [SerializeField] int stagePlaying;
