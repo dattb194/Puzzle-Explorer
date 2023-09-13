@@ -80,4 +80,10 @@ public class LevelMng : MonoBehaviour
         lineInfos = levelInfo.lineInfos;
         CameraCtrl.inst.SetData(levelInfo.cameraConfig);
     }
+
+    private void Update()
+    {
+        levelPlaying = LevelPlaying;
+        levelUnlocked = LevelUnlocked;
+    }
 }
