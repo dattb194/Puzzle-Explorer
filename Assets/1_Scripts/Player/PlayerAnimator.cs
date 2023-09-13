@@ -11,6 +11,14 @@ public class PlayerAnimator : MonoBehaviour
         anim.SetInteger("state", (int)player.StateBehavior);
         anim.SetFloat("moveMotion", player.Behavior.moveMotion);
     }
+    public void Die()
+    {
+        anim.SetTrigger("die");
+    }
+    public void Win()
+    {
+        anim.SetTrigger("win");
+    }
     public void Trigger(string trigger)
     {
         anim.SetTrigger(trigger);

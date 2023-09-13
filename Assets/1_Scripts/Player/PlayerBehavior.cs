@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlayerBehavior : MonoBehaviour
 {
     PlayerCtrl playerCtrl;
+    [SerializeField] PlayerAnimator playerAnim;
     Transform posClimb;
 
     public float moveMotion = 0;
@@ -75,5 +76,9 @@ public class PlayerBehavior : MonoBehaviour
         });
         playerCtrl.Rig.isKinematic = true;
     }
-
+    public void Die()
+    {
+        playerAnim.Die();
+        playerCtrl.StateBehavior = PlayerStateBehavior.lose;
+    }
 }

@@ -5,10 +5,13 @@ using UnityEngine.UI;
 
 public class GameplayDisplay : MonoBehaviour
 {
+    public Text txtLevel;
     public List<ButtonDraw> buttonDraws;
     public Slider enegyDisplay;
     public void SetData()
     {
+        print(LevelMng.inst.LevelPlaying);
+        txtLevel.text = $"Level {LevelMng.inst.LevelPlaying}";
         gameObject.SetActive(true);
         SetbtnsDraw();
     }

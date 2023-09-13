@@ -207,6 +207,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   type: 0
+  makePrefab: 0
 --- !u!114 &682354445768518039
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -219,6 +220,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6563c56d6a6ee244092e9ece26d8532a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerAnim: {fileID: 832586087485244472}
   moveMotion: 0
   giatoc: 1
   direction: 1

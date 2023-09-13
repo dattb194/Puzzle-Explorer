@@ -112,6 +112,7 @@ RectTransform:
   - {fileID: 135416188242312261}
   - {fileID: 8229754466650694176}
   - {fileID: 1841392322945253153}
+  - {fileID: 1994326991180517196}
   m_Father: {fileID: 0}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -170,6 +171,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf5b4358908e3f842ab5047951febd28, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  txtLevel: {fileID: 1680600548156124994}
   buttonDraws:
   - {fileID: 2271561638608886540}
   - {fileID: 184746291218589391}
@@ -711,6 +713,86 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!1 &6046257729925858759
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1994326991180517196}
+  - component: {fileID: 1498768578837529527}
+  - component: {fileID: 1680600548156124994}
+  m_Layer: 5
+  m_Name: txtLevel
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1994326991180517196
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6046257729925858759}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5079444506787794291}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.2520163, y: 0.8837935}
+  m_AnchorMax: {x: 0.7479837, y: 0.9196857}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!222 &1498768578837529527
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6046257729925858759}
+  m_CullTransparentMesh: 1
+--- !u!114 &1680600548156124994
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6046257729925858759}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 0, g: 0.45882353, b: 0.43137255, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_FontData:
+    m_Font: {fileID: 12800000, guid: 31010d2a9acc24a4789f00d183b27c9f, type: 3}
+    m_FontSize: 14
+    m_FontStyle: 1
+    m_BestFit: 1
+    m_MinSize: 1
+    m_MaxSize: 300
+    m_Alignment: 7
+    m_AlignByGeometry: 0
+    m_RichText: 1
+    m_HorizontalOverflow: 0
+    m_VerticalOverflow: 0
+    m_LineSpacing: 1
+  m_Text: Level
 --- !u!1 &6690792327901553479
 GameObject:
   m_ObjectHideFlags: 0
@@ -870,8 +952,8 @@ RectTransform:
   m_Father: {fileID: 5079444506787794291}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.18518487, y: 0.1736903}
-  m_AnchorMax: {x: 0.7234719, y: 0.24739294}
+  m_AnchorMin: {x: 0.18518487, y: 0.07941947}
+  m_AnchorMax: {x: 0.7234719, y: 0.1531221}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -973,6 +1055,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 3.8623009
       objectReference: {fileID: 0}
+    - target: {fileID: 4884829703111865113, guid: f0926493f4da759459a8514650ef4482, type: 3}
+      propertyPath: m_FontData.m_Font
+      value: 
+      objectReference: {fileID: 12800000, guid: 31010d2a9acc24a4789f00d183b27c9f, type: 3}
     - target: {fileID: 4993094251845372433, guid: f0926493f4da759459a8514650ef4482, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -1102,6 +1188,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 3.8623009
       objectReference: {fileID: 0}
+    - target: {fileID: 4884829703111865113, guid: f0926493f4da759459a8514650ef4482, type: 3}
+      propertyPath: m_FontData.m_Font
+      value: 
+      objectReference: {fileID: 12800000, guid: 31010d2a9acc24a4789f00d183b27c9f, type: 3}
     - target: {fileID: 4993094251845372433, guid: f0926493f4da759459a8514650ef4482, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -1231,6 +1321,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 3.8623009
       objectReference: {fileID: 0}
+    - target: {fileID: 4884829703111865113, guid: f0926493f4da759459a8514650ef4482, type: 3}
+      propertyPath: m_FontData.m_Font
+      value: 
+      objectReference: {fileID: 12800000, guid: 31010d2a9acc24a4789f00d183b27c9f, type: 3}
     - target: {fileID: 4993094251845372433, guid: f0926493f4da759459a8514650ef4482, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -1360,6 +1454,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 3.8623009
       objectReference: {fileID: 0}
+    - target: {fileID: 4884829703111865113, guid: f0926493f4da759459a8514650ef4482, type: 3}
+      propertyPath: m_FontData.m_Font
+      value: 
+      objectReference: {fileID: 12800000, guid: 31010d2a9acc24a4789f00d183b27c9f, type: 3}
     - target: {fileID: 4993094251845372433, guid: f0926493f4da759459a8514650ef4482, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -1489,6 +1587,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 3.8623009
       objectReference: {fileID: 0}
+    - target: {fileID: 4884829703111865113, guid: f0926493f4da759459a8514650ef4482, type: 3}
+      propertyPath: m_FontData.m_Font
+      value: 
+      objectReference: {fileID: 12800000, guid: 31010d2a9acc24a4789f00d183b27c9f, type: 3}
     - target: {fileID: 4993094251845372433, guid: f0926493f4da759459a8514650ef4482, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
