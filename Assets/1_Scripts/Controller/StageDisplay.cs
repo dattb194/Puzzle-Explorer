@@ -11,36 +11,44 @@ public class StageDisplay : MonoBehaviour
     public List<StageCard> cards;
 
     [SerializeField] int stageViewing;
+
+    public Color colorBtnAvailble;
     public int StageViewing
     {
         set {
             stageViewing = value;
-            int maxStage = 6;
-            btnNext.interactable = value < maxStage;
+            btnNext.interactable = value < Resources.Load<GameConfig>("Config/Game config").maxStage;
             btnPre.interactable = value > 1;
+            btnNext.GetComponent<Image>().color = value < Resources.Load<GameConfig>("Config/Game config").maxStage ? colorBtnAvailble : Color.white;
+            btnPre.GetComponent<Image>().color = value > 1 ? Color.gray : Color.white;
         }
+        get => stageViewing;
     }
 
     public Button btnPre, btnNext;
     public void SetData()
     {
+        btnNext.onClick.AddListener(Next);
+        btnPre.onClick.AddListener(Pre);
+
         gameObject.SetActive(true);
-        stageViewing = (int)(LevelMng.inst.LevelUnlocked - 1) / 10 + 1;
+        StageViewing = (int)(LevelMng.inst.LevelUnlocked - 1) / 10 + 1;
         ShowWithStageViewing();
     }
     public void Pre()
     {
-        stageViewing--;
+        StageViewing--;
         ShowWithStageViewing();
     }
     public void Next()
     {
-        stageViewing++;
+        StageViewing++;
         ShowWithStageViewing();
+        print("Next");
     }
     void ShowWithStageViewing()
     {
-        int min = stageViewing * 10 - 9;
+        int min = StageViewing * 10 - 9;
         txtLevel.text = $"Level {min} - {min + 9}";
         int indexCard = min;
         for (int i = 0; i < cards.Count; i++)

@@ -14,3 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   levelSet: 0
   stageSet: 0
+  maxStage: 6

@@ -7,4 +7,5 @@ public class GameConfig : ScriptableObject
 {
     public int levelSet;
     public int stageSet;
+    public int maxStage;
 }

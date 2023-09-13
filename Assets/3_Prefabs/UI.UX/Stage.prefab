@@ -176,7 +176,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1fae6800c699bcf4ba615af740965c58, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  txtStageTitle: {fileID: 0}
+  txtStageTitle: {fileID: 7048229613651811319}
   txtLevel: {fileID: 7048229613651811319}
   cards:
   - {fileID: 80215386477995815}
@@ -190,8 +190,9 @@ MonoBehaviour:
   - {fileID: 1630501741374592634}
   - {fileID: 2112225234169194246}
   stageViewing: 0
-  btnPre: {fileID: 0}
-  btnNext: {fileID: 0}
+  colorBtnAvailble: {r: 0, g: 0.9411765, b: 1, a: 1}
+  btnPre: {fileID: 8312160119041277041}
+  btnNext: {fileID: 6394912793905773504}
 --- !u!1 &4935326078325366387
 GameObject:
   m_ObjectHideFlags: 0
@@ -466,9 +467,9 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.6511534, y: 0.7831162}
   m_AnchorMax: {x: 0.73019373, y: 0.81843024}
-  m_AnchoredPosition: {x: -0.000045776367, y: 0}
+  m_AnchoredPosition: {x: 0.000091552734, y: 0}
   m_SizeDelta: {x: 0.000015258789, y: 0}
-  m_Pivot: {x: -0.00000025331974, y: 0.5}
+  m_Pivot: {x: -0.00000019930303, y: 0.5}
 --- !u!222 &5005892920041147558
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -671,7 +672,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2916665693899171151}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 3950243484308119029}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &8926108422667913752
 GameObject:
   m_ObjectHideFlags: 0
