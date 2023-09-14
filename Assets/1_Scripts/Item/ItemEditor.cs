@@ -16,7 +16,8 @@ public class ItemEditor : MonoBehaviour
         var prefab = LevelEditor.inst.itemPrefab.FirstOrDefault(x => x.type == type);
 
         if (prefab == null)
-            print("dont found item " + type);
+        //print("dont found item " + type);
+        { }
         else
         {
             GameObject item = (GameObject)Instantiate(prefab.gameObject, null);

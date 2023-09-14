@@ -11,6 +11,8 @@ public class PlayerBehavior : MonoBehaviour
     public float moveMotion = 0;
     public float giatoc = 1f;
     public float direction = 1;
+
+    public Climb climb;
     private void Start()
     {
         playerCtrl = GetComponent<PlayerCtrl>();
@@ -19,9 +21,31 @@ public class PlayerBehavior : MonoBehaviour
     {
 
     }
+
+    float posXPre;
+    float timeCheckPosX;
+    bool climbFoward;
     public void Climbing()
     {
         transform.position = posClimb.GetChild(0).position;
+
+        transform.GetChild(0).localScale = new Vector3(1, 1, climbFoward ? 1 : -1);
+
+        if (timeCheckPosX > 0)
+        {
+            timeCheckPosX -= Time.deltaTime;
+        }
+        else
+        {
+            timeCheckPosX = .3f;
+            print($"transform.position.x: {transform.position.x}///posXPre: {posXPre}");
+            if (transform.position.x >= posXPre)
+                climbFoward = true;
+            else
+                climbFoward = false;
+
+            posXPre = transform.position.x;
+        }
     }
     public void Moving()
     {
@@ -61,20 +85,25 @@ public class PlayerBehavior : MonoBehaviour
             posClimb = Instantiate(_posClimb);
         }
         posClimb.position = rope.position;
-
+        posXPre = transform.position.x;
         print("StartClimb");
         playerCtrl.StateBehavior = PlayerStateBehavior.climb;
         playerCtrl.ropesClimbed.Add(rope.parent);
 
-        var climb = new Climb(rope, posClimb);
+        climb = new Climb(rope, posClimb);
         climb.DoClimbWithRope(() =>
         {
-            print("playerCtrl.StateBehavior = PlayerStateBehavior.falling");
-            playerCtrl.StateBehavior = PlayerStateBehavior.falling;
-            rope.gameObject.SetActive(false);
-            playerCtrl.Rig.isKinematic = false;
+            StopClimb();
         });
         playerCtrl.Rig.isKinematic = true;
+    }
+    public void StopClimb()
+    {
+        print("playerCtrl.StateBehavior = PlayerStateBehavior.falling");
+        playerCtrl.StateBehavior = PlayerStateBehavior.falling;
+        climb.rope.gameObject.SetActive(false);
+        playerCtrl.Rig.isKinematic = false;
+        transform.GetChild(0).transform.localScale = Vector3.one;
     }
     public void Die()
     {
