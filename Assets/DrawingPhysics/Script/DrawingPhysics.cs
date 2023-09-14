@@ -30,8 +30,8 @@ public class DrawingPhysics : MonoBehaviour {
 	private int vertexCount;
 	[SerializeField] GameObject newLineMesh;
 	private float cameraFar=20;
-	private bool startDraw = false;
-	private bool endDraw = false;
+	[SerializeField] bool startDraw = false;
+    [SerializeField] bool endDraw = false;
 	public float destroyTime = 10;
 	private GameObject lineCollection;
 	public bool drawStable = false;
@@ -109,148 +109,164 @@ public class DrawingPhysics : MonoBehaviour {
 		if(Camera.main)
 			Candraw = canDrawWithBrick();
 
-		if (StyleDraw == DrawStyle.brick)
-		{
-			if(canDrawWithBrick())
-				Draw();
-		}
-		else
-		{
-			Draw();
-		}
-	}
-    void Draw ()
-	{
+        Draw();
+    }
+    void Draw()
+    {
         if (StyleDraw == DrawStyle.none) return;
         if (EventSystem.current.IsPointerOverGameObject()) return;
 
 
 #if UNITY_EDITOR || UNITY_STANDALONE || UNITY_WEBPLAYER
         startDraw = Input.GetKeyDown(KeyCode.Mouse0);
-			endDraw = Input.GetKeyUp(KeyCode.Mouse0);
+
+        if(isDrawing)
+            endDraw = Input.GetKeyUp(KeyCode.Mouse0);
 #else  // For touch-devices
 			if (Input.touchCount > 0) 
 			{
 				Touch touch = Input.GetTouch (0);
-				startDraw = (touch.phase == TouchPhase.Began);
-				endDraw = (touch.phase == TouchPhase.Ended);
+
+                startDraw = (touch.phase == TouchPhase.Began);
+                
+                if(isDrawing)
+				    endDraw = (touch.phase == TouchPhase.Ended);
 			}
 #endif
 
-        //When Start Draw
+        StarDraw();
+        Drawing();
+        EndDraw();
+
+    }
+    void StarDraw()
+	{
         if (startDraw)
-		{
-			if (isDrawing==false)
-			{
-				//Get first point
-				initdrawPos=cameras.ScreenToWorldPoint (new Vector3(Input.mousePosition.x, Input.mousePosition.y, cameraFar));
-				//Create LineRenderer gameobject
-				brushDrawingClone = Instantiate(linePrefab, initdrawPos, cameras.transform.rotation) as GameObject;
-				lineRenderer = brushDrawingClone.GetComponent<LineRenderer>();
-				lastdrawPos = initdrawPos;
-				//Set drawing flag
-				isDrawing = true;
-				vertexCount = 1;
-				//Create a new GameObject to be parent of LineRenderer and it's colliders
-				newLineMesh = new GameObject ("newline");
-				lineCollection = GameObject.Find("PhysicLines");
-				if (lineCollection == null)
-				{
-					lineCollection = new GameObject("PhysicLines");
-				}
-				newLineMesh.transform.position = transform.position;
-				newLineMesh.transform.SetParent(lineCollection.transform);
-                width = linePrefab.GetComponent<LineRenderer>().startWidth;
+        {
+            if (isDrawing == false)
+            {
+                if (StyleDraw != DrawStyle.brick ||
+                    (StyleDraw == DrawStyle.brick && canDrawWithBrick()))
+                {
+                    //Get first point
+                    initdrawPos = cameras.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, cameraFar));
+                    //Create LineRenderer gameobject
+                    brushDrawingClone = Instantiate(linePrefab, initdrawPos, cameras.transform.rotation) as GameObject;
+                    lineRenderer = brushDrawingClone.GetComponent<LineRenderer>();
+                    lastdrawPos = initdrawPos;
+                    //Set drawing flag
+                    isDrawing = true;
+                    vertexCount = 1;
+                    //Create a new GameObject to be parent of LineRenderer and it's colliders
+                    newLineMesh = new GameObject("newline");
+                    lineCollection = GameObject.Find("PhysicLines");
+                    if (lineCollection == null)
+                    {
+                        lineCollection = new GameObject("PhysicLines");
+                    }
+                    newLineMesh.transform.position = transform.position;
+                    newLineMesh.transform.SetParent(lineCollection.transform);
+                    width = linePrefab.GetComponent<LineRenderer>().startWidth;
+                }
             }
-		}
-		//When End Draw
-		if (endDraw)
-		{
-			//Set drawing flag
-			isDrawing = false;
-			//Set LineRenderer gameobject to be child of newLineMesh
-			brushDrawingClone.transform.parent = newLineMesh.transform;
-			//Add Rigidbody to newLineMesh
-			Rigidbody newRigbody = newLineMesh.AddComponent<Rigidbody>();
-			
-			newRigbody.interpolation = RigidbodyInterpolation.Interpolate;
-			newRigbody.collisionDetectionMode = CollisionDetectionMode.ContinuousSpeculative;
+        }
+    }
+	void Drawing()
+	{
+        if (isDrawing && brushDrawingClone && mouseMove() && LevelMng.inst.Enegy > 0)
+        {
+            if (StyleDraw != DrawStyle.brick ||
+                    (StyleDraw == DrawStyle.brick && canDrawWithBrick()))
+            {
+                //Screen to WorldPoint
+                drawPos = cameras.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, cameraFar));
+                //Calculate distance between this draw point and last
+                float drawdistance = Vector3.Distance(drawPos, lastdrawPos);
+                //When draw a new point which far enough
+                if (drawdistance >= cameraFar * width / 80)
+                {
+                    //Add a new LineRenderer node
+                    vertexCount = vertexCount + 1;
+                    lineRenderer.positionCount = vertexCount;
+                    lineRenderer.SetPosition(vertexCount - 1, brushDrawingClone.transform.InverseTransformPoint(drawPos));
+                    lineRenderer.startWidth = cameraFar * width / 60;
+                    lineRenderer.endWidth = cameraFar * width / 60;
+                    lineRenderer.sharedMaterial = lineMaterial;
+                    //Create colliders belongs to it
+                    colliderClone = Instantiate(colliderPrefab, (drawPos + lastdrawPos) / 2, Quaternion.LookRotation(drawPos - lastdrawPos)) as GameObject;
+
+                    CapsuleCollider capsulecollider = colliderClone.GetComponent<CapsuleCollider>();
+                    capsulecollider.radius = cameraFar * width / 120;
+                    capsulecollider.height = drawdistance;
+                    //Make colliders to be childs of newLineMesh
+                    colliderClone.transform.parent = newLineMesh.transform;
+                    //Save last draw point
+                    lastdrawPos = drawPos;
+                    LevelMng.inst.Enegy--;
+                }
+            }
+        }
+    }
+	void EndDraw()
+	{
+        if (endDraw)
+        {
+            //Set drawing flag
+            isDrawing = false;
+            //Set LineRenderer gameobject to be child of newLineMesh
+
+            brushDrawingClone.transform.parent = newLineMesh.transform;
+            //Add Rigidbody to newLineMesh
+            Rigidbody newRigbody = newLineMesh.AddComponent<Rigidbody>();
+
+            newRigbody.interpolation = RigidbodyInterpolation.Interpolate;
+            newRigbody.collisionDetectionMode = CollisionDetectionMode.ContinuousSpeculative;
             //Rigdbody constraints
             newRigbody.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezePositionZ;
-			//Hold leftShift to draw soild lines
-			if (drawStable)
-			{
-				newRigbody.isKinematic = true;
-			}
-
-			//Add delay destroy
-			Destroy(newLineMesh, destroyTime);
-			switch (StyleDraw)
-			{
-				case DrawStyle.walk:
-                    TubeRenderer tubeRenderer = lineRenderer.AddComponent<TubeRenderer>();
-                    tubeRenderer.SetData(lineRenderer);
-					break;
-                case DrawStyle.brick:
-					Destroy(newLineMesh.gameObject, 3);
-					break;
-				case DrawStyle.fire:
-				case DrawStyle.water:
-                    Destroy(newLineMesh.gameObject, 1);
-					break;
+            //Hold leftShift to draw soild lines
+            if (drawStable)
+            {
+                newRigbody.isKinematic = true;
             }
 
-			if (StyleDraw == DrawStyle.rope || StyleDraw == DrawStyle.fire || StyleDraw == DrawStyle.water || StyleDraw == DrawStyle.brick)
-			{
-				for (int i = 0; i < newLineMesh.transform.childCount - 1; i++)
-				{
-					newLineMesh.transform.GetChild(i).GetComponent<LineElement>().Active();
-				}
-			}
+            //Add delay destroy
+            Destroy(newLineMesh, destroyTime);
+            switch (StyleDraw)
+            {
+                case DrawStyle.walk:
+                    TubeRenderer tubeRenderer = lineRenderer.AddComponent<TubeRenderer>();
+                    tubeRenderer.SetData(lineRenderer);
+                    break;
+                case DrawStyle.brick:
+                    Destroy(newLineMesh.gameObject, 3);
+                    break;
+                case DrawStyle.fire:
+                case DrawStyle.water:
+                    Destroy(newLineMesh.gameObject, 1);
+                    break;
+            }
 
-			if (StyleDraw == DrawStyle.walk)
-			{
-				
-			}
+            if (StyleDraw == DrawStyle.rope || StyleDraw == DrawStyle.fire || StyleDraw == DrawStyle.water || StyleDraw == DrawStyle.brick)
+            {
+                for (int i = 0; i < newLineMesh.transform.childCount - 1; i++)
+                {
+                    newLineMesh.transform.GetChild(i).GetComponent<LineElement>().Active();
+                }
+            }
+
+            if (StyleDraw == DrawStyle.walk)
+            {
+
+            }
 
             //GenerMesh(lineRenderer.gameObject, lineRenderer);
             LevelMng.inst.lineInfos.FirstOrDefault(x => x.style == StyleDraw).quantity--;
-			UIMng.inst.gameplayDisplay.OnEndDrawing();
-			StyleDraw = DrawStyle.none;
-		}
-		
-		//Set LineRenderer and create it's colliders
-		if (isDrawing && brushDrawingClone && mouseMove() && LevelMng.inst.Enegy>0)
-		{
-			//Screen to WorldPoint
-			drawPos = cameras.ScreenToWorldPoint (new Vector3(Input.mousePosition.x, Input.mousePosition.y, cameraFar));
-			//Calculate distance between this draw point and last
-			float drawdistance = Vector3.Distance(drawPos, lastdrawPos);
-			//When draw a new point which far enough
-			if (drawdistance>=cameraFar*width/80)
-			{
-				//Add a new LineRenderer node
-				vertexCount = vertexCount + 1;
-				lineRenderer.positionCount = vertexCount;
-				lineRenderer.SetPosition(vertexCount-1, brushDrawingClone.transform.InverseTransformPoint(drawPos));
-				lineRenderer.startWidth = cameraFar*width/60;
-				lineRenderer.endWidth = cameraFar*width/60;
-				lineRenderer.sharedMaterial = lineMaterial;
-				//Create colliders belongs to it
-                colliderClone = Instantiate(colliderPrefab, (drawPos+lastdrawPos)/2, Quaternion.LookRotation(drawPos-lastdrawPos)) as GameObject;
+            UIMng.inst.gameplayDisplay.OnEndDrawing();
+            StyleDraw = DrawStyle.none;
 
-				CapsuleCollider capsulecollider = colliderClone.GetComponent<CapsuleCollider>();
-				capsulecollider.radius = cameraFar*width/120;
-				capsulecollider.height = drawdistance;
-				//Make colliders to be childs of newLineMesh
-				colliderClone.transform.parent = newLineMesh.transform;
-				//Save last draw point
-				lastdrawPos = drawPos;
-                LevelMng.inst.Enegy--;
-			}
-		}
-		
-	}
+            endDraw = false;
+        }
+    }
 	int stateSelect;
 	public void SetStateDraw(int state)
 	{

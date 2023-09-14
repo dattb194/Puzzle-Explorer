@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Game config
   m_EditorClassIdentifier: 
   deleteAllPP: 0
-  levelSet: 13
+  levelSet: 0
   stageSet: 0
   maxStage: 2
