@@ -11,6 +11,8 @@ TagManager:
   - player
   - landFace
   - lineBrick
+  - brick
+  - drawBrickZone
   layers:
   - Default
   - TransparentFX
