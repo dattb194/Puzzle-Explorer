@@ -15,4 +15,4 @@ MonoBehaviour:
   deleteAllPP: 0
   levelSet: 13
   stageSet: 0
-  maxStage: 5
+  maxStage: 2
