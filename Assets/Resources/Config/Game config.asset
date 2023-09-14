@@ -16,3 +16,4 @@ MonoBehaviour:
   levelSet: 0
   stageSet: 0
   maxStage: 2
+  goldBonus: 100
