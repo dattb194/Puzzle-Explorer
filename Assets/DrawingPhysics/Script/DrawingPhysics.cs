@@ -50,6 +50,17 @@ public class DrawingPhysics : MonoBehaviour {
 
             _SetDrawStable((int)value);
 
+			switch (value)
+			{
+				case DrawStyle.brick:
+					ZoneCanDrawBrick.inst.Toggle(true);
+					break;
+
+
+				case DrawStyle.none:
+                    ZoneCanDrawBrick.inst.Toggle(false);
+                    break;
+            }
 		}
 	}
 
@@ -80,29 +91,54 @@ public class DrawingPhysics : MonoBehaviour {
         go.AddComponent<MeshCollider>().sharedMesh = lineBakedMesh; //Set the baked mesh to the MeshCollider
         go.GetComponent<MeshCollider>().convex = false;
     }
-    private void Update()
-    {
-		Draw();
-    }
+	public bool Candraw;
+	bool canDrawWithBrick()
+	{
+		var ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+		if (Physics.Raycast(ray, out RaycastHit hit))
+		{
+			if (hit.collider.gameObject.tag == "drawBrickZone")
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+	private void Update()
+	{
+		if(Camera.main)
+			Candraw = canDrawWithBrick();
+
+		if (StyleDraw == DrawStyle.brick)
+		{
+			if(canDrawWithBrick())
+				Draw();
+		}
+		else
+		{
+			Draw();
+		}
+	}
     void Draw ()
 	{
-		if (StyleDraw == DrawStyle.none) return;
-		if (EventSystem.current.IsPointerOverGameObject()) return;
+        if (StyleDraw == DrawStyle.none) return;
+        if (EventSystem.current.IsPointerOverGameObject()) return;
+
 
 #if UNITY_EDITOR || UNITY_STANDALONE || UNITY_WEBPLAYER
-            startDraw = Input.GetKeyDown(KeyCode.Mouse0);
+        startDraw = Input.GetKeyDown(KeyCode.Mouse0);
 			endDraw = Input.GetKeyUp(KeyCode.Mouse0);
-		#else  // For touch-devices
+#else  // For touch-devices
 			if (Input.touchCount > 0) 
 			{
 				Touch touch = Input.GetTouch (0);
 				startDraw = (touch.phase == TouchPhase.Began);
 				endDraw = (touch.phase == TouchPhase.Ended);
 			}
-		#endif
+#endif
 
-		//When Start Draw
-		if (startDraw)
+        //When Start Draw
+        if (startDraw)
 		{
 			if (isDrawing==false)
 			{

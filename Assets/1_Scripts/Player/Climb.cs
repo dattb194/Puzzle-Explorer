@@ -1,6 +1,7 @@
 ﻿using DG.Tweening;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.XR;
 
 [System.Serializable]
 public class Climb
@@ -8,6 +9,7 @@ public class Climb
     public Transform posClimb;
     public Vector3[] points;
     public float duration = 2;
+    string idTween = "myTween";
 
     public Transform rope;
 
@@ -18,8 +20,9 @@ public class Climb
         this.posClimb = posClimb;
         this.points = points;
         this.duration = duration;
+        idTween = "myTween";
     }
-    public Climb(Transform rope,  Transform posClimb,float duration = 1)
+    public Climb(Transform rope, Transform posClimb, float duration = 1)
     {
         this.rope = rope;
         this.posClimb = posClimb;
@@ -29,9 +32,9 @@ public class Climb
     public void DoClimbWithPoints(UnityAction done = null)
     {
         duration = 1.5f;
-        posClimb.transform.DOPath(points, duration).SetEase(Ease.Linear).SetSpeedBased().SetAutoKill(true).onComplete += () =>
+        posClimb.transform.DOPath(points, duration).SetEase(Ease.Linear).SetSpeedBased().SetId(idTween).SetAutoKill(true).onComplete += () =>
         {
-            done?.Invoke();
+            ForceStop(done);
         };
     }
     public void DoClimbWithRope(UnityAction done = null)
@@ -55,5 +58,11 @@ public class Climb
             }
         }
         DoClimbWithPoints(done);
+    }
+    public void ForceStop(UnityAction done = null)
+    {
+        Debug.Log(44444444);
+        done?.Invoke();
+        DOTween.Kill(idTween);
     }
 }

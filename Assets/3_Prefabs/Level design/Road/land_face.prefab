@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 4145494143427990190}
   - component: {fileID: 5825281244209466475}
   - component: {fileID: 6249805113813785425}
+  - component: {fileID: -6871020722572493608}
   m_Layer: 0
   m_Name: land_face
   m_TagString: landFace
@@ -121,6 +122,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: 3
   makePrefab: 0
+--- !u!114 &-6871020722572493608
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 231973354885184429}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ce0782963332904dbf50764b84bb03f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &8147729620348457035
 PrefabInstance:
   m_ObjectHideFlags: 0
