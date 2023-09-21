@@ -120,6 +120,8 @@ public class PlayerCtrl : MonoBehaviour
             if (timeCheckLose <= 0)
                 GPMng.inst.Lose();
         }
+        if (transform.position.y < -30)
+            GPMng.inst.Lose();
     }
 
     private void OnTriggerEnter(Collider other)

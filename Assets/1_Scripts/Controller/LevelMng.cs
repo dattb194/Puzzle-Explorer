@@ -23,6 +23,8 @@ public class LevelMng : MonoBehaviour
         {
             levelPlaying = value;
             PlayerPrefs.SetInt(PPKey.LevelPlaying, value);
+            if (value > LevelUnlocked)
+                LevelUnlocked = value;
         }
     }
     [SerializeField] int levelUnlocked;

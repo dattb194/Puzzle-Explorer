@@ -13,6 +13,9 @@ public class StageCard : MonoBehaviour
 
     [SerializeField] Sprite sprPassed;
     [SerializeField] Sprite sprNotPassed;
+    [SerializeField] Sprite sprPlaying;
+
+    public Color ogange;
     public bool IsUnlocked
     {
         set {
@@ -32,9 +35,12 @@ public class StageCard : MonoBehaviour
         button = GetComponent<Button>();
         if (LevelMng.inst.LevelPlaying == ID || !IsUnlocked)
         {
+            image.sprite = sprPlaying;
             button.interactable = false;
             return;
         }
+        else
+            image.sprite = IsUnlocked ? sprPassed : sprNotPassed;
 
         button.interactable = true;
 

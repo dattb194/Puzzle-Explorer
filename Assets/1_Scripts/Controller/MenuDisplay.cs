@@ -5,12 +5,9 @@ using UnityEngine.UI;
 
 public class MenuDisplay : MonoBehaviour
 {
-    public Text txtGold;
-    public Text txtDiamond;
-    public void SetData(int goldQuantity, int diamondQuantity)
+    public void SetData()
     {
-        txtGold.text = goldQuantity.ToString();
-        txtDiamond.text = diamondQuantity.ToString();
+        gameObject.SetActive(true);
     }
     public void ForceStart()
     {
@@ -22,8 +19,8 @@ public class MenuDisplay : MonoBehaviour
     
     }
     public void Inventory()
-    { 
-    
+    {
+        UIMng.inst.inventoryDisplay.SetData();
     }
     public void Stage()
     {
