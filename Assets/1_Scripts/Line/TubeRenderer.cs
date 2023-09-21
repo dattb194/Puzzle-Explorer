@@ -47,9 +47,7 @@ public class TubeRenderer : MonoBehaviour
     private Vector3 lastCameraPosition2;
     private Vector3[] crossPoints;
     private int lastCrossSegments;
-    private float lastRebuildTime = 0;
     private Mesh mesh;
-    private bool colliderExists = false;
     private bool usingBumpmap = false;
 
     //public Renderer ren => GetComponent<Renderer>();

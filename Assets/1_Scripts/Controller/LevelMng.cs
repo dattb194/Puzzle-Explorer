@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class LevelMng : MonoBehaviour
 {
@@ -21,6 +23,8 @@ public class LevelMng : MonoBehaviour
         {
             levelPlaying = value;
             PlayerPrefs.SetInt(PPKey.LevelPlaying, value);
+            if (value > LevelUnlocked)
+                LevelUnlocked = value;
         }
     }
     [SerializeField] int levelUnlocked;
@@ -58,7 +62,6 @@ public class LevelMng : MonoBehaviour
         inst = this;
     }
     [SerializeField] int enegy;
-    [SerializeField]
     public int Enegy
     {
         set
@@ -70,7 +73,43 @@ public class LevelMng : MonoBehaviour
     }
     public int MaxEnegy = 1000;
 
+    [SerializeField] int goldCurrent;
+    public int GoldCurrent
+    {
+        set
+        {
+            if (value < 0)
+                value = 0;
+            goldCurrent = value;
+            PlayerPrefs.SetInt(PPKey.GoldCurrent, value);
+            GoldCurrentChange?.Invoke(value);
+        }
+        get
+        {
+            return PlayerPrefs.GetInt(PPKey.GoldCurrent);
+        }
+    }
+    [SerializeField] int diamondCurrent;
+    public int DiamondCurrent
+    {
+        set
+        {
+            if (value < 0)
+                value = 0;
+            diamondCurrent = value;
+            PlayerPrefs.SetInt(PPKey.DiamondCurrent, value);
+            DiamondCurrentChange?.Invoke(value);
+        }
+        get
+        {
+            return PlayerPrefs.GetInt(PPKey.DiamondCurrent);
+        }
+    }
+
     public List<LineInfo> lineInfos;
+
+    public UnityAction<int> GoldCurrentChange;
+    public UnityAction<int> DiamondCurrentChange;
     public void LoadLevel()
     {
         levelInfo = LevelEditor.inst.levelInfo;

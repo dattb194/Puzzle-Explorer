@@ -9,10 +9,17 @@ public class Enemy : MonoBehaviour
     public Animator anim;
 
     [SerializeField] EnemyState state;
+
+    public KillPlayer killPlayer;
     public EnemyState State
     {
-        set {
+        set
+        {
             state = value;
+            if (state == EnemyState.die)
+            {
+                killPlayer.isDisabled = true;
+            }
         }
         get => state;
     }
@@ -22,7 +29,6 @@ public class Enemy : MonoBehaviour
     }
     private void OnTriggerEnter(Collider other)
     {
-
         switch (other.gameObject.tag)
         {
             case "player": 

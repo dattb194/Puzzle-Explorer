@@ -17,11 +17,11 @@ public class UIMng : MonoBehaviour
     public GameplayDisplay gameplayDisplay;
     public MenuDisplay menuDisplay;
     public StageDisplay stageDisplay;
+    public InventoryDisplay inventoryDisplay;
 
-
-    private void Update()
+    public void ShowMenuGame()
     {
-        
+        menuDisplay.SetData();
     }
 
     public void OnStartGame()
