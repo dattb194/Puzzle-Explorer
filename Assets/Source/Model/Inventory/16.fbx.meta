@@ -3,7 +3,12 @@ guid: da42bbf7b2f1eab4e9842d8dbafc6ccf
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: earphones
+    second: {fileID: 2100000, guid: be687f2541d865342b3a6c6cd624798f, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
