@@ -1,16 +1,28 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class LuckyBonus : MonoBehaviour
 {
+    [SerializeField] Text txtGold;
     Transform textRoot;
     Transform arrowRoot;
     [SerializeField] int mValue;
-    [SerializeField] Text txtGold;
 
-    public int goldBonus;
+    [SerializeField] int goldBonus;
+
+    bool getBonusSuccess = false;
+    public int GoldBonus
+    {
+        set
+        {
+            goldBonus = value;
+        }
+        get => goldBonus;
+    }
+    public UnityAction<int> OnChoiseSuccess;
     public int MValue
     {
         set
@@ -30,8 +42,8 @@ public class LuckyBonus : MonoBehaviour
                 case 3: hs = 5; break;
             }
 
-            goldBonus = Resources.Load<GameConfig>("Config/Game config").goldBonus * hs;
-            txtGold.text = "" + goldBonus;
+            GoldBonus = Resources.Load<GameConfig>("Config/Game config").goldBonus * hs;
+            txtGold.text = "" + GoldBonus;
 
             mValue = value;
             for (int i = 0; i < textRoot.childCount; i++)
@@ -51,6 +63,7 @@ public class LuckyBonus : MonoBehaviour
     }
     private void Update()
     {
+        if (getBonusSuccess) return;
         if (coutTime >= .5f)
         {
             MValue++;
@@ -58,5 +71,24 @@ public class LuckyBonus : MonoBehaviour
         }
         else
             coutTime += Time.deltaTime;
+    }
+    public void GetReward()
+    {
+        getBonusSuccess = true;
+        LevelMng.inst.GoldCurrent += GoldBonus;
+        OnChoiseSuccess?.Invoke(GoldBonus);
+        Invoke("ReloadScene", 2);
+    }
+    public void NoThank()
+    {
+        getBonusSuccess = true;
+        LevelMng.inst.GoldCurrent += Resources.Load<GameConfig>("Config/Game config").goldBonus;
+        OnChoiseSuccess?.Invoke(Resources.Load<GameConfig>("Config/Game config").goldBonus);
+        Invoke("ReloadScene", 2);
+    }
+
+    void ReloadScene()
+    {
+        GPMng.inst.ReloadScene();
     }
 }

@@ -58,7 +58,8 @@ public class DrawingPhysics : MonoBehaviour {
 
 
 				case DrawStyle.none:
-                    ZoneCanDrawBrick.inst.Toggle(false);
+                    if(ZoneCanDrawBrick.inst)
+                        ZoneCanDrawBrick.inst.Toggle(false);
                     break;
             }
 		}

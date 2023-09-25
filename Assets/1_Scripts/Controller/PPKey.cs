@@ -5,5 +5,9 @@ public static class PPKey
 {
     public const string LevelPlaying = "LevelPlaying";
     public const string StagePlaying = "StagePlaying";
-    public const string LevelUnlocked = "LevelUnlocked";
+    public const string LevelUnlocked = "LevelUnlocked"; 
+    public const string GoldCurrent = "GoldCurrent";
+    public const string DiamondCurrent = "DiamondCurrent"; 
+    public const string SkinsOwned = "SkinsOwned"; 
+    public const string SkinEquipped = "SkinEquipped";
 }

@@ -168,6 +168,7 @@ MonoBehaviour:
   - lineBrick
   anim: {fileID: 518988487257581286}
   state: 0
+  killPlayer: {fileID: 4471228335856979339}
 --- !u!1 &2664518576498915849
 GameObject:
   m_ObjectHideFlags: 0
@@ -287,6 +288,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a01a40c9bc4f8f4ab95b51a381108eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isDisabled: 0
 --- !u!54 &9079425363645676610
 Rigidbody:
   m_ObjectHideFlags: 0

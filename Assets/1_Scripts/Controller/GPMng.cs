@@ -22,6 +22,12 @@ public class GPMng : MonoBehaviour
     }
     private void Start()
     {
+
+        Initialize();
+        StartCoroutine(LoadLevelPlaying());
+    }
+    void Initialize()
+    {
         if (gameConfig.deleteAllPP)
         {
             PlayerPrefs.DeleteAll();
@@ -41,14 +47,12 @@ public class GPMng : MonoBehaviour
             LevelMng.inst.StagePlaying = gameConfig.stageSet;
             gameConfig.stageSet = 0;
         }
-
-        StartCoroutine(LoadLevelPlaying());
+        GCMng.inst.Load();
     }
     IEnumerator LoadLevelPlaying()
     {
         AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(LevelMng.inst.LevelPlaying.ToString(), LoadSceneMode.Additive);
 
-        // Wait until the asynchronous scene fully loads
         while (!asyncLoad.isDone)
         {
             yield return null;
@@ -59,10 +63,14 @@ public class GPMng : MonoBehaviour
         {
             items[i].LoadFrefab();
         }
-        //onLoadLevelDone?.Invoke();
-
         LevelMng.inst.LoadLevel();
         DrawingPhysics.inst.Initialize();
+        UIMng.inst.ShowMenuGame();
+    }
+    public void SkipLevel()
+    {
+        LevelMng.inst.LevelPlaying++;
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
     public void ReloadScene()
     {
@@ -77,10 +85,6 @@ public class GPMng : MonoBehaviour
         IsPlaying = false;
         UIMng.inst.Win();
         LevelMng.inst.LevelPlaying++;
-
-        if (LevelMng.inst.LevelPlaying > LevelMng.inst.LevelUnlocked)
-            LevelMng.inst.LevelUnlocked = LevelMng.inst.LevelPlaying;
-
     }
     public void Lose()
     {

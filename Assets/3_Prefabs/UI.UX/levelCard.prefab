@@ -338,7 +338,7 @@ MonoBehaviour:
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_DisabledColor: {r: 1, g: 1, b: 1, a: 1}
     m_ColorMultiplier: 1
     m_FadeDuration: 0.1
   m_SpriteState:
@@ -376,3 +376,5 @@ MonoBehaviour:
   objlock: {fileID: 5269894976090719559}
   sprPassed: {fileID: 21300000, guid: 0b66a71948c283d4a99b2d216565582b, type: 3}
   sprNotPassed: {fileID: 21300000, guid: e81b2c131a96f5444aa3a44645617dfa, type: 3}
+  sprPlaying: {fileID: 21300000, guid: dedb9d6807499a144825a31713a47611, type: 3}
+  ogange: {r: 0.9137255, g: 0.47058824, b: 0.0627451, a: 1}

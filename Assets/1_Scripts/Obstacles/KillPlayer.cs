@@ -1,17 +1,17 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-namespace Assets._1_Scripts.Obstacles
+public class KillPlayer : MonoBehaviour
 {
-    public class KillPlayer : MonoBehaviour
+    public bool isDisabled = false;
+    private void OnTriggerEnter(Collider other)
     {
-        private void OnTriggerEnter(Collider other)
+        if (isDisabled) return;
+
+        if (other.gameObject.tag == "player")
         {
-            if (other.gameObject.tag == "player")
-            {
-                other.GetComponent<PlayerBehavior>().Die();
-                GPMng.inst.Lose();
-            }
+            other.GetComponent<PlayerBehavior>().Die();
+            GPMng.inst.Lose();
         }
     }
 }
