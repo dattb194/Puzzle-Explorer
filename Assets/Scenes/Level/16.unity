@@ -997,7 +997,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   levelInfo:
     ID: 16
-    MaxEnegy: 100
+    MaxEnegy: 200
     cameraConfig:
       followPlayer: 1
     lineInfos:
