@@ -24,7 +24,9 @@ public class GPMng : MonoBehaviour
     {
 
         Initialize();
-        StartCoroutine(LoadLevelPlaying());
+
+        if(LevelMng.inst.LevelPlaying <= 10)
+            StartCoroutine(LoadLevelPlaying());
     }
     void Initialize()
     {
@@ -47,6 +49,8 @@ public class GPMng : MonoBehaviour
             LevelMng.inst.StagePlaying = gameConfig.stageSet;
             gameConfig.stageSet = 0;
         }
+        
+
         GCMng.inst.Load();
     }
     IEnumerator LoadLevelPlaying()
@@ -58,11 +62,6 @@ public class GPMng : MonoBehaviour
             yield return null;
         }
 
-        var items = FindObjectsOfType<ItemEditor>();
-        for (int i = 0; i < items.Length; i++)
-        {
-            items[i].LoadFrefab();
-        }
         LevelMng.inst.LoadLevel();
         DrawingPhysics.inst.Initialize();
         UIMng.inst.ShowMenuGame();

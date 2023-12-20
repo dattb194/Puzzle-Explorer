@@ -25,6 +25,7 @@ public class GCMng : MonoBehaviour
 
     public IEnumerator LoadGameConfig(Action<string> onSheetLoadedAction)
     {
+        DeviceDebug.Log("555555");
         string url = "https://docs.google.com/spreadsheets/d/*/export?format=csv";
         string actualUrl = url.Replace("*", "11F02qXsrTPe811YpwI1P8bOc1vFLsinffBhtAtaGf9g");
         using (UnityWebRequest request = UnityWebRequest.Get(actualUrl))

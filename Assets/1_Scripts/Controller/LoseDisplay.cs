@@ -6,7 +6,7 @@ public class LoseDisplay : MonoBehaviour
 {
     public void Skip()
     {
-    
+        GPMng.inst.SkipLevel();
     }
     public void Replay()
     {
